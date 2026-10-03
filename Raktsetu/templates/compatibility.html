@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+
+{% block title %}Blood Group Compatibility Matrix | Red Blood Cell Matching{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Header -->
+    <div class="text-center max-w-700 mx-auto mb-5">
+        <span class="badge bg-danger-subtle text-danger rounded-pill px-3 py-1 mb-2 fw-semibold">Medical Reference</span>
+        <h2 class="fw-extrabold">Interactive Blood Compatibility Matrix</h2>
+        <p class="text-muted">
+            Transfusing incompatible red blood cells can cause life-threatening immune reactions. Understand who can give to whom and who can receive from whom.
+        </p>
+    </div>
+
+    <!-- Interactive Blood Group Selector -->
+    <div class="card border-0 shadow-sm rounded-4 p-4 mb-5">
+        <h5 class="fw-bold mb-3 text-center">
+            <i class="fa-solid fa-hand-pointer text-danger me-2"></i> Select Any Blood Group to Test Compatibility:
+        </h5>
+        <div class="d-flex flex-wrap justify-content-center gap-2 mb-4">
+            {% for bg in ["O-", "O+", "A-", "A+", "B-", "B+", "AB-", "AB+"] %}
+            <button type="button" class="btn btn-outline-danger btn-lg blood-selector-btn rounded-pill px-4 fw-bold {% if bg == 'O+' %}active{% endif %}" data-bg="{{ bg }}">
+                {{ bg }}
+            </button>
+            {% endfor %}
+        </div>
+
+        <div class="row g-4 align-items-stretch" id="compat-results-box">
+            <!-- Can Donate To -->
+            <div class="col-md-6">
+                <div class="card h-100 border-0 bg-success-subtle rounded-4 p-4 shadow-sm">
+                    <div class="d-flex align-items-center gap-2 text-success mb-3">
+                        <i class="fa-solid fa-arrow-up-from-bracket fs-4"></i>
+                        <h5 class="fw-bold mb-0">Can DONATE Red Blood Cells To:</h5>
+                    </div>
+                    <p class="small text-muted mb-3">Patients with these blood groups can safely accept this blood:</p>
+                    <div class="d-flex flex-wrap gap-2" id="donate-to-badges">
+                        <!-- Filled by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Can Receive From -->
+            <div class="col-md-6">
+                <div class="card h-100 border-0 bg-primary-subtle rounded-4 p-4 shadow-sm">
+                    <div class="d-flex align-items-center gap-2 text-primary mb-3">
+                        <i class="fa-solid fa-arrow-down-to-bracket fs-4"></i>
+                        <h5 class="fw-bold mb-0">Can RECEIVE Red Blood Cells From:</h5>
+                    </div>
+                    <p class="small text-muted mb-3">This patient can safely receive transfusions from these donors:</p>
+                    <div class="d-flex flex-wrap gap-2" id="receive-from-badges">
+                        <!-- Filled by JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-4">
+            <a href="{{ url_for('donors') }}?blood_group=O%2B&compatible=1" id="search-compat-btn" class="btn btn-danger rounded-pill px-4 fw-bold shadow-sm">
+                <i class="fa-solid fa-magnifying-glass me-1"></i> Find Matching Donors for O+
+            </a>
+        </div>
+    </div>
+
+    <!-- Complete Compatibility Grid Table -->
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-5">
+        <div class="card-header bg-dark text-white p-3 p-md-4">
+            <h5 class="fw-bold mb-0">
+                <i class="fa-solid fa-table me-2 text-danger"></i> Complete Red Blood Cell Transfusion Matrix
+            </h5>
+            <small class="text-white-50">Row = Donor Blood Type &bull; Column = Recipient Blood Type</small>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover text-center align-middle mb-0 matrix-table">
+                <thead class="table-light">
+                    <tr>
+                        <th class="bg-secondary text-white fw-bold">Donor \ Recipient</th>
+                        <th class="fw-bold text-danger">O-</th>
+                        <th class="fw-bold text-danger">O+</th>
+                        <th class="fw-bold text-danger">A-</th>
+                        <th class="fw-bold text-danger">A+</th>
+                        <th class="fw-bold text-danger">B-</th>
+                        <th class="fw-bold text-danger">B+</th>
+                        <th class="fw-bold text-danger">AB-</th>
+                        <th class="fw-bold text-danger">AB+</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="fw-bold bg-light">O- (Universal Donor)</td>
+                        <td class="table-success"><i class="fa-solid fa-check text-success"></i></td>
+                        <td class="table-success"><i class="fa-solid fa-check text-success"></i></td>
+                        <td class="table-success"><i class="fa-solid fa-check text-success"></i></td>
+                        <td class="table-success"><i class="fa-solid fa-check text-success"></i></td>
+                        <td class="table-success"><i class="fa-solid fa-check text-success"></i></td>
+                        <td class="table-success"><i class="fa-solid fa-check text-success"></i></td>
+                        <td class="table-success"><i class="fa-solid fa-check text-success"></i></td>
+                        <td class="table-success"><i class="fa-solid fa-check text-success"></i></td>
+                    </tr>
+                    <tr>
+                        <td class="fw-bold bg-light">O+</td>
+                        <td class="table-danger text-muted">&times;</td>
+                        <td class="table-success"><i class="fa-solid fa-check text-success"></i></td>
+                        <td class="table-danger text-muted">&times;</td>
+                        <td class="table-success"><i class="fa-solid fa-check text-success"></i></td>
+                        <td class="table-danger text-muted">&times;</td>
+                        <td class="table-success"><i class="fa-solid fa-check text-success"></i></td>
+                        <td class="table-danger text-muted">&times;</td>
+                        <td class="table-success"><i class="fa-solid fa-check text-success"></i></td>
+                    </tr>
+                    <tr>
+                        <td class="fw-bold bg-light">A-</td>
+                        <td class="table-danger text-muted">&times;</td>
+                        <td class="table-danger text-muted">&times;</td>
+                        <td class="table-success"><i class="fa-solid fa-check text-success"></i></td>
+                        <td class="table-success"><i class="fa-solid fa-check text-success"></i></td>
+                        <td class="table-danger text-muted">&times;</td>
+                        <td class="table-danger text-muted">&times;</td>
+                        <td class="table-success"><i class="fa-solid fa-check text-success"></i></td>
+                        <td class="table-success"><i class="fa-solid fa-check text-success"></i></td>
+                    </tr>
+                    <tr>
+                        <td class="fw-bold bg-light">A+</td>
+                        <td class="table-danger text-muted">&times;</td>
+                        <td class="table-danger text-muted">&times;</td>
+                        <td class="table-danger text-muted">&times;</td>
+                        <td class="table-success"><i class="fa-solid fa-check text-success"></i></td>
+                        <td class="table-danger text-muted">&times;</td>
+                        <td class="table-danger text-muted">&times;</td>
+                        <td class="table-danger text-muted">&times;</td>
+                        <td class="table-success"><i class="fa-solid fa-check text-success"></i></td>
+                    </tr>
+                    <tr>
+                        <td class="fw-bold bg-light">B-</td>
+                        <td class="table-danger text-muted">&times;</td>
+                        <td class="table-danger text-muted">&times;</td>
+                        <td class="table-danger text-muted">&times;</td>
+                        <td class="table-danger text-muted">&times;</td>
+                        <td class="table-success"><i class="fa-solid fa-check text-success"></i></td>
+                        <td class="table-success"><i class="fa-solid fa-check text-success"></i></td>
+                        <td class="table-success"><i class="fa-solid fa-check text-success"></i></td>
+                        <td class="table-success"><i class="fa-solid fa-check text-success"></i></td>
+                    </tr>
+                    <tr>
+                        <td class="fw-bold bg-light">B+</td>
+                        <td class="table-danger text-muted">&times;</td>
+                        <td class="table-danger text-muted">&times;</td>
+                        <td class="table-danger text-muted">&times;</td>
+                        <td class="table-danger text-muted">&times;</td>
+                        <td class="table-danger text-muted">&times;</td>
+                        <td class="table-success"><i class="fa-solid fa-check text-success"></i></td>
+                        <td class="table-danger text-muted">&times;</td>
+                        <td class="table-success"><i class="fa-solid fa-check text-success"></i></td>
+                    </tr>
+                    <tr>
+                        <td class="fw-bold bg-light">AB-</td>
+                        <td class="table-danger text-muted">&times;</td>
+                        <td class="table-danger text-muted">&times;</td>
+                        <td class="table-danger text-muted">&times;</td>
+                        <td class="table-danger text-muted">&times;</td>
+                        <td class="table-danger text-muted">&times;</td>
+                        <td class="table-danger text-muted">&times;</td>
+                        <td class="table-success"><i class="fa-solid fa-check text-success"></i></td>
+                        <td class="table-success"><i class="fa-solid fa-check text-success"></i></td>
+                    </tr>
+                    <tr>
+                        <td class="fw-bold bg-light">AB+</td>
+                        <td class="table-danger text-muted">&times;</td>
+                        <td class="table-danger text-muted">&times;</td>
+                        <td class="table-danger text-muted">&times;</td>
+                        <td class="table-danger text-muted">&times;</td>
+                        <td class="table-danger text-muted">&times;</td>
+                        <td class="table-danger text-muted">&times;</td>
+                        <td class="table-danger text-muted">&times;</td>
+                        <td class="table-success"><i class="fa-solid fa-check text-success"></i></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Embedded JSON matrix for instant interactive switching
+    const DONOR_MATRIX = {{ donor_matrix | tojson }};
+    const RECIPIENT_MATRIX = {{ recipient_matrix | tojson }};
+</script>
+{% endblock %}

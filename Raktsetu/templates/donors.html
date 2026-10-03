@@ -1,0 +1,181 @@
+{% extends "base.html" %}
+
+{% block title %}Find Blood Donors | Search by Blood Group & City{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Header Banner -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4 pb-2 border-bottom">
+        <div>
+            <h2 class="fw-bold mb-1">
+                <i class="fa-solid fa-users text-danger me-2"></i> Verified Blood Donors
+            </h2>
+            <p class="text-muted small mb-0">Browse voluntary donors or search by blood group and location.</p>
+        </div>
+        <div class="d-flex gap-2">
+            <a href="{{ url_for('register') }}" class="btn btn-danger rounded-pill px-3 shadow-sm">
+                <i class="fa-solid fa-user-plus me-1"></i> Register as Donor
+            </a>
+        </div>
+    </div>
+
+    <!-- Search / Filter Card -->
+    <div class="card border-0 shadow-sm rounded-4 mb-4 filter-panel p-3 p-md-4">
+        <form action="{{ url_for('donors') }}" method="GET" class="row g-3 align-items-center">
+            <div class="col-md-3">
+                <label class="form-label small fw-bold text-muted mb-1">Blood Group</label>
+                <select name="blood_group" class="form-select rounded-3">
+                    <option value="">All Blood Groups</option>
+                    {% for bg in blood_groups %}
+                    <option value="{{ bg }}" {% if selected_bg == bg %}selected{% endif %}>{{ bg }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label small fw-bold text-muted mb-1">City / Location</label>
+                <div class="input-group">
+                    <span class="input-group-text bg-white border-end-0"><i class="fa-solid fa-location-dot text-danger"></i></span>
+                    <input type="text" name="city" value="{{ selected_city }}" class="form-control border-start-0 rounded-end-3" placeholder="Enter city (e.g. Mumbai, Delhi)">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-check form-switch pt-md-4">
+                    <input class="form-check-input" type="checkbox" name="compatible" value="1" id="compatibleCheck" {% if include_compatible %}checked{% endif %}>
+                    <label class="form-check-label small fw-semibold" for="compatibleCheck">
+                        Include Compatible Groups
+                    </label>
+                </div>
+            </div>
+            <div class="col-md-2 d-flex flex-column justify-content-end">
+                <label class="form-label d-none d-md-block small mb-1">&nbsp;</label>
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-danger rounded-3 w-100 fw-bold">
+                        <i class="fa-solid fa-filter me-1"></i> Filter
+                    </button>
+                    {% if selected_bg or selected_city or include_compatible %}
+                    <a href="{{ url_for('donors') }}" class="btn btn-outline-secondary rounded-3" title="Clear Filters">
+                        <i class="fa-solid fa-rotate-left"></i>
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </form>
+
+        <!-- Compatible Groups Notice -->
+        {% if selected_bg and include_compatible and compatible_groups %}
+        <div class="alert alert-info py-2 px-3 mt-3 mb-0 rounded-3 small d-flex align-items-center gap-2">
+            <i class="fa-solid fa-circle-info fs-5"></i>
+            <div>
+                Showing compatible blood donors for <strong>{{ selected_bg }}</strong> recipient:
+                <span class="ms-1">
+                    {% for cg in compatible_groups %}
+                    <span class="badge bg-danger rounded-pill">{{ cg }}</span>
+                    {% endfor %}
+                </span>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Results Meta -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h6 class="text-muted fw-bold mb-0">
+            Found <span class="text-danger">{{ donors|length }}</span> Donor{% if donors|length != 1 %}s{% endif %}
+        </h6>
+        <div>
+            {% if all_donors %}
+                <a href="{{ url_for('donors', blood_group=selected_bg, city=selected_city, compatible='1' if include_compatible else '') }}" class="text-decoration-none small text-muted">
+                    <i class="fa-solid fa-eye-slash me-1"></i> Hide unavailable donors
+                </a>
+            {% else %}
+                <a href="{{ url_for('donors', blood_group=selected_bg, city=selected_city, compatible='1' if include_compatible else '', all='1') }}" class="text-decoration-none small text-muted">
+                    <i class="fa-solid fa-eye me-1"></i> Show all donors (including unavailable)
+                </a>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Donors Cards Grid -->
+    {% if donors %}
+    <div class="row g-4">
+        {% for donor in donors %}
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 border-0 shadow-sm rounded-4 donor-card transition-all">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-start justify-content-between mb-3">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="blood-avatar rounded-circle d-flex align-items-center justify-content-center text-white fw-bold shadow-sm">
+                                {{ donor.blood_group }}
+                            </div>
+                            <div>
+                                <h5 class="fw-bold mb-0">{{ donor.name }}</h5>
+                                <small class="text-muted">{{ donor.gender }}, {{ donor.age }} yrs</small>
+                            </div>
+                        </div>
+                        <span class="badge {% if donor.is_available %}bg-success-subtle text-success border border-success-subtle{% else %}bg-secondary-subtle text-secondary border border-secondary-subtle{% endif %} rounded-pill px-2 py-1 small">
+                            <i class="fa-solid fa-circle fa-2xs me-1"></i>
+                            {% if donor.is_available %}Available{% else %}Unavailable{% endif %}
+                        </span>
+                    </div>
+
+                    <div class="donor-details small text-secondary mb-3 d-flex flex-column gap-1">
+                        <div>
+                            <i class="fa-solid fa-location-dot text-danger me-2"></i>
+                            <strong>{{ donor.city }}</strong>{% if donor.state %}, {{ donor.state }}{% endif %}
+                            {% if donor.pincode %}<span class="text-muted">({{ donor.pincode }})</span>{% endif %}
+                        </div>
+                        <div>
+                            <i class="fa-solid fa-calendar-check text-danger me-2"></i>
+                            Last Donated: <span class="text-dark">{{ donor.last_donation_date or 'Not specified' }}</span>
+                        </div>
+                        {% if donor.email %}
+                        <div>
+                            <i class="fa-solid fa-envelope text-danger me-2"></i>
+                            <span class="text-muted">{{ donor.email }}</span>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="d-flex gap-2 pt-2 border-top">
+                        <!-- Direct Call -->
+                        <a href="tel:{{ donor.phone }}" class="btn btn-outline-danger btn-sm rounded-pill flex-fill fw-semibold">
+                            <i class="fa-solid fa-phone me-1"></i> Call
+                        </a>
+                        <!-- WhatsApp Direct -->
+                        <a href="https://wa.me/91{{ donor.phone }}?text=Hello%20{{ donor.name }},%20I%20found%20your%20profile%20on%20Blood%20Donor%20Finder.%20Are%20you%20available%20to%20donate%20{{ donor.blood_group }}%20blood%20in%20{{ donor.city }}%3F" target="_blank" class="btn btn-success btn-sm rounded-pill flex-fill fw-semibold">
+                            <i class="fa-brands fa-whatsapp me-1"></i> WhatsApp
+                        </a>
+                        <!-- Toggle status -->
+                        <form action="{{ url_for('toggle_status', donor_id=donor.id) }}" method="POST" class="d-inline" onsubmit="return confirm('Toggle availability status for this donor?');">
+                            <button type="submit" class="btn btn-light btn-sm rounded-pill text-muted" title="Toggle Status">
+                                <i class="fa-solid fa-power-off"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <!-- Empty State -->
+    <div class="text-center py-5 bg-white rounded-4 shadow-sm p-4">
+        <div class="empty-icon text-muted mb-3">
+            <i class="fa-solid fa-user-slash fs-1 text-danger opacity-50"></i>
+        </div>
+        <h4 class="fw-bold">No Matching Donors Found</h4>
+        <p class="text-muted small max-w-500 mx-auto mb-4">
+            We couldn't find any donors matching your criteria. Try widening your search location, turning on <em>"Include Compatible Groups"</em>, or post an urgent blood request immediately.
+        </p>
+        <div class="d-flex justify-content-center gap-3">
+            <a href="{{ url_for('donors') }}" class="btn btn-outline-secondary rounded-pill px-4">
+                <i class="fa-solid fa-arrow-rotate-left me-1"></i> Reset Filters
+            </a>
+            <a href="{{ url_for('requests_page') }}" class="btn btn-danger rounded-pill px-4">
+                <i class="fa-solid fa-bullhorn me-1"></i> Post Emergency Request
+            </a>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

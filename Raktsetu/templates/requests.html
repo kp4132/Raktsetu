@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+
+{% block title %}Emergency Blood Requests | Urgent Hospital Needs{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Top Banner -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4 pb-2 border-bottom">
+        <div>
+            <div class="d-flex align-items-center gap-2">
+                <span class="pulse-indicator"></span>
+                <h2 class="fw-bold mb-0">Emergency Blood Requests</h2>
+            </div>
+            <p class="text-muted small mb-0">Live feed of patients requiring immediate blood transfusion in hospitals.</p>
+        </div>
+        <div>
+            <button class="btn btn-danger rounded-pill px-4 shadow-sm" data-bs-toggle="modal" data-bs-target="#newRequestModal">
+                <i class="fa-solid fa-plus-circle me-1"></i> Post Urgent Blood Need
+            </button>
+        </div>
+    </div>
+
+    <!-- Emergency Requests Feed -->
+    <div class="row g-4">
+        {% if requests %}
+            {% for req in requests %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm rounded-4 request-card position-relative overflow-hidden">
+                    <div class="card-status-bar {% if req.urgency == 'Critical' %}bg-danger{% elif req.urgency == 'Immediate' %}bg-warning{% else %}bg-info{% endif %}"></div>
+                    <div class="card-body p-4 d-flex flex-column">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <div class="blood-avatar rounded-circle d-flex align-items-center justify-content-center text-white fw-bold shadow-sm bg-danger">
+                                {{ req.blood_group }}
+                            </div>
+                            <span class="badge {% if req.urgency == 'Critical' %}bg-danger{% elif req.urgency == 'Immediate' %}bg-warning text-dark{% else %}bg-info text-white{% endif %} rounded-pill px-3 py-1 small">
+                                <i class="fa-solid fa-triangle-exclamation me-1"></i> {{ req.urgency }}
+                            </span>
+                        </div>
+
+                        <h5 class="fw-bold mb-1">{{ req.patient_name }}</h5>
+                        <div class="text-secondary small mb-3 flex-grow-1">
+                            <p class="mb-1"><i class="fa-solid fa-hospital text-danger me-2"></i><strong>{{ req.hospital }}</strong></p>
+                            <p class="mb-1"><i class="fa-solid fa-location-dot text-danger me-2"></i>{{ req.city }}</p>
+                            <p class="mb-1"><i class="fa-solid fa-flask text-danger me-2"></i>Requirement: <strong>{{ req.units }} Unit(s)</strong></p>
+                            <p class="mb-1"><i class="fa-solid fa-user-shield text-danger me-2"></i>Contact: {{ req.contact_name }}</p>
+                            {% if req.note %}
+                            <div class="alert alert-light border py-2 px-3 mt-2 mb-0 rounded-3 small">
+                                <em>"{{ req.note }}"</em>
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="d-flex gap-2 pt-3 border-top mt-auto">
+                            <a href="tel:{{ req.contact_phone }}" class="btn btn-outline-danger btn-sm rounded-pill flex-fill fw-semibold">
+                                <i class="fa-solid fa-phone me-1"></i> Call Now
+                            </a>
+                            <a href="https://wa.me/91{{ req.contact_phone }}?text=Hello%20{{ req.contact_name }},%20I%20saw%20your%20emergency%20blood%20request%20for%20{{ req.blood_group }}%20blood%20in%20{{ req.hospital }},%20{{ req.city }}.%20I%20am%20ready%20to%20help." target="_blank" class="btn btn-success btn-sm rounded-pill flex-fill fw-semibold">
+                                <i class="fa-brands fa-whatsapp me-1"></i> WhatsApp
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="col-12">
+                <div class="text-center py-5 bg-white rounded-4 shadow-sm p-4">
+                    <i class="fa-solid fa-circle-check fs-1 text-success mb-3"></i>
+                    <h4 class="fw-bold">No Active Emergency Requests</h4>
+                    <p class="text-muted small">All current patient requests have been fulfilled! You can post a new request if needed.</p>
+                    <button class="btn btn-danger rounded-pill px-4" data-bs-toggle="modal" data-bs-target="#newRequestModal">
+                        Post an Emergency Request
+                    </button>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Modal: Post Urgent Request -->
+<div class="modal fade" id="newRequestModal" tabindex="-1" aria-labelledby="newRequestModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content rounded-4 border-0 shadow-lg overflow-hidden">
+            <div class="modal-header bg-gradient-danger text-white p-4">
+                <div>
+                    <h5 class="modal-title fw-bold" id="newRequestModalLabel">
+                        <i class="fa-solid fa-bullhorn me-2"></i> Post Emergency Blood Request
+                    </h5>
+                    <small class="text-white-50">This notice will be visible immediately to all donors and visitors.</small>
+                </div>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ url_for('requests_page') }}" method="POST">
+                <div class="modal-body p-4">
+                    <div class="row g-3">
+                        <div class="col-md-7">
+                            <label class="form-label small fw-bold">Patient Name <span class="text-danger">*</span></label>
+                            <input type="text" name="patient_name" class="form-control rounded-3" placeholder="Full name of patient" required>
+                        </div>
+                        <div class="col-md-5">
+                            <label class="form-label small fw-bold">Required Blood Group <span class="text-danger">*</span></label>
+                            <select name="blood_group" class="form-select rounded-3" required>
+                                <option value="" selected disabled>Select Blood Group</option>
+                                {% for bg in blood_groups %}
+                                <option value="{{ bg }}">{{ bg }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label small fw-bold">Units Needed</label>
+                            <input type="number" name="units" min="1" max="10" value="1" class="form-control rounded-3" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label small fw-bold">Urgency Level <span class="text-danger">*</span></label>
+                            <select name="urgency" class="form-select rounded-3" required>
+                                <option value="Critical">Critical (Immediate 1-2 hours)</option>
+                                <option value="Immediate" selected>Urgent (Within 6-12 hours)</option>
+                                <option value="Within 24 Hours">Scheduled (Within 24-48 hours)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label small fw-bold">City <span class="text-danger">*</span></label>
+                            <input type="text" name="city" class="form-control rounded-3" placeholder="e.g. Mumbai" required>
+                        </div>
+
+                        <div class="col-md-12">
+                            <label class="form-label small fw-bold">Hospital Name & Branch <span class="text-danger">*</span></label>
+                            <input type="text" name="hospital" class="form-control rounded-3" placeholder="e.g. Fortis Hospital, Mulund West" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold">Contact Person Name <span class="text-danger">*</span></label>
+                            <input type="text" name="contact_name" class="form-control rounded-3" placeholder="Attendant / Relative name" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold">Contact Phone Number <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light">+91</span>
+                                <input type="tel" name="contact_phone" pattern="[0-9]{10}" class="form-control rounded-end-3" placeholder="10-digit mobile number" required>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label small fw-bold">Additional Notes / Case Details</label>
+                            <textarea name="note" class="form-control rounded-3" rows="2" placeholder="e.g. ICU Bed #4, Surgery scheduled for 9 AM. Need replacement donors."></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer bg-light p-3">
+                    <button type="button" class="btn btn-secondary rounded-pill px-4" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-danger rounded-pill px-4 fw-bold">
+                        <i class="fa-solid fa-paper-plane me-1"></i> Post Urgent Need
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

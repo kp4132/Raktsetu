@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+
+{% block title %}Register as a Blood Donor | Save Lives{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+                <!-- Card Header -->
+                <div class="bg-gradient-danger text-white p-4 p-md-5">
+                    <span class="badge bg-white text-danger fw-bold rounded-pill px-3 py-1 mb-2">Be a Hero</span>
+                    <h2 class="fw-extrabold mb-2">Donor Registration Form</h2>
+                    <p class="mb-0 text-white-50">
+                        Join our life-saving community. Your 10 minutes of donation can give someone a lifetime of birthdays.
+                    </p>
+                </div>
+
+                <!-- Form Body -->
+                <div class="card-body p-4 p-md-5">
+                    <form action="{{ url_for('register') }}" method="POST" id="donorForm" novalidate>
+                        <!-- Basic Info Section -->
+                        <h5 class="fw-bold mb-3 text-secondary border-bottom pb-2">
+                            <i class="fa-solid fa-user me-2 text-danger"></i> Personal Information
+                        </h5>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-7">
+                                <label class="form-label small fw-bold">Full Name <span class="text-danger">*</span></label>
+                                <input type="text" name="name" class="form-control rounded-3" placeholder="e.g. Rahul Sharma" required>
+                                <div class="invalid-feedback">Please enter your name.</div>
+                            </div>
+                            <div class="col-md-5">
+                                <label class="form-label small fw-bold">Blood Group <span class="text-danger">*</span></label>
+                                <select name="blood_group" class="form-select rounded-3" required>
+                                    <option value="" selected disabled>Select Blood Group</option>
+                                    {% for bg in blood_groups %}
+                                    <option value="{{ bg }}">{{ bg }}</option>
+                                    {% endfor %}
+                                </select>
+                                <div class="invalid-feedback">Please select your blood group.</div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="form-label small fw-bold">Age <span class="text-danger">*</span> <small class="text-muted">(18-65)</small></label>
+                                <input type="number" name="age" min="18" max="65" class="form-control rounded-3" placeholder="e.g. 25" required>
+                                <div class="invalid-feedback">Age must be between 18 and 65.</div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="form-label small fw-bold">Gender <span class="text-danger">*</span></label>
+                                <select name="gender" class="form-select rounded-3" required>
+                                    <option value="" selected disabled>Select Gender</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                                <div class="invalid-feedback">Please select your gender.</div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="form-label small fw-bold">Last Donation Date</label>
+                                <input type="date" name="last_donation_date" class="form-control rounded-3">
+                                <div class="form-text small">Leave blank if donating for the first time.</div>
+                            </div>
+                        </div>
+
+                        <!-- Contact & Location Section -->
+                        <h5 class="fw-bold mb-3 text-secondary border-bottom pb-2">
+                            <i class="fa-solid fa-location-dot me-2 text-danger"></i> Contact & Location
+                        </h5>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold">Mobile Phone <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light">+91</span>
+                                    <input type="tel" name="phone" pattern="[0-9]{10}" class="form-control rounded-end-3" placeholder="10-digit mobile number" required>
+                                </div>
+                                <div class="form-text small">Required for emergency verification and patient contact.</div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label small fw-bold">Email Address</label>
+                                <input type="email" name="email" class="form-control rounded-3" placeholder="name@example.com">
+                            </div>
+
+                            <div class="col-md-5">
+                                <label class="form-label small fw-bold">City <span class="text-danger">*</span></label>
+                                <input type="text" name="city" class="form-control rounded-3" placeholder="e.g. Mumbai" required>
+                                <div class="invalid-feedback">Please enter your city.</div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="form-label small fw-bold">State</label>
+                                <input type="text" name="state" class="form-control rounded-3" placeholder="e.g. Maharashtra">
+                            </div>
+
+                            <div class="col-md-3">
+                                <label class="form-label small fw-bold">Pin Code</label>
+                                <input type="text" name="pincode" pattern="[0-9]{6}" class="form-control rounded-3" placeholder="e.g. 400001">
+                            </div>
+                        </div>
+
+                        <!-- Pledge Checkbox -->
+                        <div class="p-3 bg-light rounded-3 mb-4 border">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="pledgeCheck" required>
+                                <label class="form-check-label small fw-semibold" for="pledgeCheck">
+                                    I confirm that I am in good health, weigh at least 45 kg, and volunteer to donate blood willingly without any financial compensation.
+                                </label>
+                                <div class="invalid-feedback">You must accept the donor pledge to proceed.</div>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-danger btn-lg rounded-pill fw-bold shadow-sm">
+                                <i class="fa-solid fa-heart me-2"></i> Register as a Blood Donor
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
