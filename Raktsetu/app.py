@@ -1,10 +1,10 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, send_from_directory
+from flask import Flask, render_template, request, redirect, url_for, flash, jsonify, send_from_directory, session
 import database
 import socket
 import os
 
 app = Flask(__name__)
-app.secret_key = "blood_donor_finder_secret_key_antigravity"
+app.secret_key = os.environ.get("SECRET_KEY", "dev-secret-key")
 
 # Initialize database on startup
 database.init_db()
