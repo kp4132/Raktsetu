@@ -6,8 +6,42 @@ import os
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "dev-secret-key")
 
+# Admin credentials
+ADMIN_USERNAME = os.environ.get("ADMIN_USERNAME", "admin")
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "RaktSetu@123")
+
 # Initialize database on startup
 database.init_db()
+
+# Admin Routes
+@app.route("/admin/login", methods=["GET", "POST"])
+def admin_login():
+    if request.method == "POST":
+        username = request.form.get("username", "")
+        password = request.form.get("password", "")
+        if username == ADMIN_USERNAME and password == ADMIN_PASSWORD:
+            session["admin_logged_in"] = True
+            flash("Admin login successful.", "success")
+            return redirect(url_for("admin_dashboard"))
+        flash("Invalid username or password.", "danger")
+    return render_template("admin_login.html")
+
+@app.route("/admin")
+def admin_dashboard():
+    if not session.get("admin_logged_in"):
+        return redirect(url_for("admin_login"))
+    stats = database.get_stats()
+    return render_template("admin_dashboard.html", stats=stats)
+
+@app.route("/admin/logout")
+def admin_logout():
+    session.pop("admin_logged_in", None)
+    return redirect(url_for("login"))
+
+# Login Page
+@app.route("/login")
+def login():
+    return render_template("login.html")
 
 # PWA Service Worker & Manifest Routes
 @app.route("/manifest.json")
@@ -23,6 +57,10 @@ def service_worker():
 # Web Routes
 @app.route("/")
 def home():
+    return redirect(url_for("login"))
+
+@app.route("/index")
+def index():
     stats = database.get_stats()
     recent_requests = database.get_recent_requests(limit=4)
     return render_template("index.html", stats=stats, recent_requests=recent_requests)
