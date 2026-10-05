@@ -1,0 +1,301 @@
+{% extends "base.html" %}
+
+{% block title %}Blood Donor Finder | Immediate Blood Donors in Your City{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section py-5 position-relative overflow-hidden">
+    <div class="container py-lg-4">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-7">
+                <span class="badge bg-danger-subtle text-danger border border-danger-subtle px-3 py-2 rounded-pill fw-semibold mb-3">
+                    <i class="fa-solid fa-heart-pulse me-1"></i> Emergency Blood Finder Network
+                </span>
+                <h1 class="display-4 fw-extrabold hero-title mb-3">
+                    A Single Drop of Blood Can <span class="text-danger">Save a Life</span>
+                </h1>
+                <p class="lead text-secondary mb-4">
+                    Connect directly with verified voluntary blood donors in your city. Search compatible blood groups, view emergency requirements, or register to become a life-saving hero.
+                </p>
+
+                <!-- Search Card -->
+                <div class="card search-card shadow-lg border-0 rounded-4 p-3 p-md-4">
+                    <form action="{{ url_for('donors') }}" method="GET" class="row g-3 align-items-center">
+                        <div class="col-md-4">
+                            <label class="form-label small fw-bold text-muted mb-1">
+                                <i class="fa-solid fa-droplet text-danger me-1"></i> Blood Group
+                            </label>
+                            <select name="blood_group" class="form-select form-select-lg rounded-3" required>
+                                <option value="" selected disabled>Select Group</option>
+                                <option value="A+">A Positive (A+)</option>
+                                <option value="A-">A Negative (A-)</option>
+                                <option value="B+">B Positive (B+)</option>
+                                <option value="B-">B Negative (B-)</option>
+                                <option value="AB+">AB Positive (AB+)</option>
+                                <option value="AB-">AB Negative (AB-)</option>
+                                <option value="O+">O Positive (O+)</option>
+                                <option value="O-">O Negative (O-)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-5">
+                            <label class="form-label small fw-bold text-muted mb-1">
+                                <i class="fa-solid fa-location-dot text-danger me-1"></i> City / Location
+                            </label>
+                            <input type="text" name="city" class="form-control form-select-lg rounded-3" placeholder="e.g. Mumbai, Delhi, Bengaluru">
+                        </div>
+                        <div class="col-md-3 d-flex flex-column justify-content-end">
+                            <label class="form-label d-none d-md-block small mb-1">&nbsp;</label>
+                            <button type="submit" class="btn btn-danger btn-lg rounded-3 w-100 fw-bold shadow">
+                                <i class="fa-solid fa-magnifying-glass me-1"></i> Find Now
+                            </button>
+                        </div>
+                        <div class="col-12 mt-2">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" name="compatible" value="1" id="includeComp" checked>
+                                <label class="form-check-label small text-muted" for="includeComp">
+                                    <i class="fa-solid fa-code-compare text-danger me-1"></i> Include clinically compatible donor blood groups
+                                </label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Hero Illustration / Visual Stats Card -->
+            <div class="col-lg-5">
+                <div class="hero-visual-card position-relative p-4 rounded-4 shadow-lg text-white">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div>
+                            <h5 class="fw-bold mb-0">Live Network Status</h5>
+                            <small class="text-white-50">Real-time voluntary network</small>
+                        </div>
+                        <span class="live-dot-pulse"></span>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-6">
+                            <div class="stat-box bg-white bg-opacity-10 p-3 rounded-3">
+                                <div class="fs-2 fw-extrabold text-warning">{{ stats.total_donors }}</div>
+                                <div class="small text-white-50">Registered Donors</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="stat-box bg-white bg-opacity-10 p-3 rounded-3">
+                                <div class="fs-2 fw-extrabold text-success">{{ stats.available_donors }}</div>
+                                <div class="small text-white-50">Active & Ready</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="stat-box bg-white bg-opacity-10 p-3 rounded-3">
+                                <div class="fs-2 fw-extrabold text-danger">{{ stats.open_requests }}</div>
+                                <div class="small text-white-50">Urgent Requests</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="stat-box bg-white bg-opacity-10 p-3 rounded-3">
+                                <div class="fs-2 fw-extrabold text-info">{{ stats.cities_covered }}</div>
+                                <div class="small text-white-50">Cities Covered</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 pt-3 border-top border-white border-opacity-10 d-flex justify-content-between align-items-center">
+                        <span class="small text-white-50">Ready to save a life?</span>
+                        <a href="{{ url_for('register') }}" class="btn btn-sm btn-light rounded-pill px-3 fw-semibold">
+                            Join as Donor &rarr;
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Urgent Blood Requests Carousel / Highlight -->
+{% if recent_requests %}
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-end mb-4">
+            <div>
+                <span class="badge bg-danger rounded-pill px-3 py-1 mb-2">URGENT CALL</span>
+                <h2 class="fw-bold mb-0">Emergency Patient Requests</h2>
+                <p class="text-muted small mb-0">Patients in critical need of immediate transfusion</p>
+            </div>
+            <a href="{{ url_for('requests_page') }}" class="btn btn-outline-danger btn-sm rounded-pill">
+                View All Requests ({{ recent_requests|length }}) &rarr;
+            </a>
+        </div>
+
+        <div class="row g-4">
+            {% for req in recent_requests %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm rounded-4 request-card position-relative overflow-hidden">
+                    <div class="card-status-bar {% if req.urgency == 'Critical' %}bg-danger{% elif req.urgency == 'Immediate' %}bg-warning{% else %}bg-info{% endif %}"></div>
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <div class="blood-badge-circle bg-danger text-white fw-bold">
+                                {{ req.blood_group }}
+                            </div>
+                            <span class="badge {% if req.urgency == 'Critical' %}bg-danger{% elif req.urgency == 'Immediate' %}bg-warning text-dark{% else %}bg-info{% endif %} rounded-pill px-3 py-2">
+                                <i class="fa-solid fa-triangle-exclamation me-1"></i> {{ req.urgency }}
+                            </span>
+                        </div>
+                        <h5 class="fw-bold mb-1">{{ req.patient_name }}</h5>
+                        <p class="text-muted small mb-2">
+                            <i class="fa-solid fa-hospital text-danger me-1"></i> {{ req.hospital }}, {{ req.city }}
+                        </p>
+                        <p class="small text-secondary mb-3">
+                            <i class="fa-solid fa-flask text-danger me-1"></i> <strong>{{ req.units }} Unit(s)</strong> needed
+                            {% if req.note %} &bull; <em>"{{ req.note }}"</em>{% endif %}
+                        </p>
+                        <div class="d-flex gap-2">
+                            <a href="tel:{{ req.contact_phone }}" class="btn btn-danger btn-sm rounded-pill flex-fill">
+                                <i class="fa-solid fa-phone me-1"></i> Call Contact
+                            </a>
+                            <a href="https://wa.me/91{{ req.contact_phone }}?text=Hello%20{{ req.contact_name }},%20I%20saw%20your%20emergency%20blood%20request%20for%20{{ req.blood_group }}%20blood%20in%20{{ req.hospital }},%20{{ req.city }}.%20I%20can%20help." target="_blank" class="btn btn-success btn-sm rounded-pill flex-fill">
+                                <i class="fa-brands fa-whatsapp me-1"></i> WhatsApp
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- How It Works Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="text-center max-w-700 mx-auto mb-5">
+            <span class="badge bg-danger-subtle text-danger rounded-pill px-3 py-1 mb-2 fw-semibold">Simple & Fast</span>
+            <h2 class="fw-bold">How Blood Donor Finder Works</h2>
+            <p class="text-muted">Connecting blood donors and recipients without intermediaries</p>
+        </div>
+
+        <div class="row g-4 text-center">
+            <div class="col-md-4">
+                <div class="step-card p-4 rounded-4 h-100 bg-white shadow-sm border">
+                    <div class="step-icon-wrapper bg-danger text-white rounded-circle mx-auto mb-3 shadow">
+                        <i class="fa-solid fa-user-plus fs-4"></i>
+                    </div>
+                    <h5 class="fw-bold">1. Register as a Donor</h5>
+                    <p class="text-muted small">
+                        Voluntary donors sign up with their blood group, location, and phone number in less than 60 seconds.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="step-card p-4 rounded-4 h-100 bg-white shadow-sm border">
+                    <div class="step-icon-wrapper bg-primary text-white rounded-circle mx-auto mb-3 shadow">
+                        <i class="fa-solid fa-magnifying-glass-location fs-4"></i>
+                    </div>
+                    <h5 class="fw-bold">2. Search or Post Request</h5>
+                    <p class="text-muted small">
+                        Search matching or compatible donors by city, or post an urgent emergency request for hospitals.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="step-card p-4 rounded-4 h-100 bg-white shadow-sm border">
+                    <div class="step-icon-wrapper bg-success text-white rounded-circle mx-auto mb-3 shadow">
+                        <i class="fa-solid fa-phone-volume fs-4"></i>
+                    </div>
+                    <h5 class="fw-bold">3. Direct Contact & Save Lives</h5>
+                    <p class="text-muted small">
+                        Connect immediately via Phone Call or WhatsApp. No middlemen, no delays, directly saving lives.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Donor Eligibility Checklist -->
+<section class="py-5 bg-white border-top">
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6">
+                <span class="badge bg-danger-subtle text-danger rounded-pill px-3 py-1 mb-2 fw-semibold">Eligibility Guide</span>
+                <h2 class="fw-bold mb-3">Can You Donate Blood?</h2>
+                <p class="text-muted mb-4">
+                    Most healthy adults are eligible to donate blood. Check the basic guidelines below:
+                </p>
+
+                <div class="d-flex flex-column gap-3">
+                    <div class="d-flex align-items-start gap-3 p-3 rounded-3 bg-light border">
+                        <i class="fa-solid fa-circle-check text-success fs-4 mt-1"></i>
+                        <div>
+                            <h6 class="fw-bold mb-1">Age between 18 and 65 years</h6>
+                            <p class="small text-muted mb-0">Donors must be in good physical health and sound mind.</p>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-start gap-3 p-3 rounded-3 bg-light border">
+                        <i class="fa-solid fa-circle-check text-success fs-4 mt-1"></i>
+                        <div>
+                            <h6 class="fw-bold mb-1">Weight 45 kg or above</h6>
+                            <p class="small text-muted mb-0">Adequate body weight ensures safe fluid withdrawal during donation.</p>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-start gap-3 p-3 rounded-3 bg-light border">
+                        <i class="fa-solid fa-circle-check text-success fs-4 mt-1"></i>
+                        <div>
+                            <h6 class="fw-bold mb-1">Hemoglobin Level &ge; 12.5 g/dL</h6>
+                            <p class="small text-muted mb-0">Ensures you have healthy oxygen-carrying capacity.</p>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-start gap-3 p-3 rounded-3 bg-light border">
+                        <i class="fa-solid fa-circle-check text-success fs-4 mt-1"></i>
+                        <div>
+                            <h6 class="fw-bold mb-1">Donation Gap of 90 Days</h6>
+                            <p class="small text-muted mb-0">Minimum 3 months interval since your last whole blood donation.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <a href="{{ url_for('register') }}" class="btn btn-danger rounded-pill px-4 py-2 fw-semibold">
+                        <i class="fa-solid fa-hand-holding-heart me-2"></i> Register as a Donor Today
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="card border-0 shadow-lg rounded-4 p-4 bg-gradient-danger text-white">
+                    <h4 class="fw-bold mb-3"><i class="fa-solid fa-circle-info me-2"></i> Quick Compatibility Facts</h4>
+                    <ul class="list-unstyled d-flex flex-column gap-3 mb-4">
+                        <li class="d-flex align-items-center gap-3">
+                            <span class="badge bg-light text-danger fw-bold fs-6 p-2 rounded-3">O-</span>
+                            <div>
+                                <strong>Universal Red Blood Cell Donor:</strong> Can donate to ANY blood group in emergencies.
+                            </div>
+                        </li>
+                        <li class="d-flex align-items-center gap-3">
+                            <span class="badge bg-light text-danger fw-bold fs-6 p-2 rounded-3">AB+</span>
+                            <div>
+                                <strong>Universal Recipient:</strong> Can receive blood from ANY blood group safely.
+                            </div>
+                        </li>
+                        <li class="d-flex align-items-center gap-3">
+                            <span class="badge bg-light text-danger fw-bold fs-6 p-2 rounded-3">Rh+</span>
+                            <div>
+                                <strong>Rh Positive:</strong> Can receive from both Rh+ and Rh- matching groups.
+                            </div>
+                        </li>
+                        <li class="d-flex align-items-center gap-3">
+                            <span class="badge bg-light text-danger fw-bold fs-6 p-2 rounded-3">Rh-</span>
+                            <div>
+                                <strong>Rh Negative:</strong> Can receive blood ONLY from Rh- groups.
+                            </div>
+                        </li>
+                    </ul>
+                    <a href="{{ url_for('compatibility') }}" class="btn btn-light rounded-pill text-danger fw-bold w-100">
+                        <i class="fa-solid fa-table me-2"></i> Open Interactive Compatibility Tool
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

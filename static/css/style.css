@@ -1,0 +1,289 @@
+/* Blood Donor Finder - Custom Stylesheet */
+
+:root {
+    --primary-red: #d90429;
+    --dark-red: #9b001d;
+    --light-red: #ef233c;
+    --soft-red-bg: #fff0f3;
+    --dark-navy: #111827;
+    --text-primary: #1f2937;
+    --text-muted: #6b7280;
+    --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.03);
+    --hover-shadow: 0 20px 25px -5px rgba(217, 4, 41, 0.1), 0 8px 10px -6px rgba(217, 4, 41, 0.06);
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: var(--text-primary);
+    background-color: #f8fafc;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+/* Navbar */
+.bg-blood-nav {
+    background-color: #1a1e24;
+    border-bottom: 2px solid var(--primary-red);
+}
+
+.brand-sub {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    background: rgba(217, 4, 41, 0.2);
+    color: #ff8597;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: 4px;
+}
+
+.blood-drop-icon {
+    font-size: 1.4rem;
+    animation: gentle-beat 1.8s ease-in-out infinite;
+}
+
+@keyframes gentle-beat {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+}
+
+.pulse-badge {
+    animation: pulse-red 2s infinite;
+}
+
+@keyframes pulse-red {
+    0% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.7); }
+    70% { box-shadow: 0 0 0 8px rgba(220, 53, 69, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0); }
+}
+
+.btn-glow {
+    box-shadow: 0 4px 14px rgba(217, 4, 41, 0.35);
+    transition: all 0.3s ease;
+}
+
+.btn-glow:hover {
+    box-shadow: 0 6px 20px rgba(217, 4, 41, 0.5);
+    transform: translateY(-1px);
+}
+
+/* Hero Section */
+.hero-section {
+    background: radial-gradient(circle at 10% 20%, #fff5f6 0%, #ffffff 80%);
+}
+
+.hero-title {
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+}
+
+.search-card {
+    background: #ffffff;
+    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.08);
+}
+
+.hero-visual-card {
+    background: linear-gradient(135deg, #b91c1c 0%, #7f1d1d 100%);
+}
+
+.live-dot-pulse {
+    width: 12px;
+    height: 12px;
+    background-color: #22c55e;
+    border-radius: 50%;
+    display: inline-block;
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+    animation: pulse-green 1.8s infinite;
+}
+
+@keyframes pulse-green {
+    0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(34, 197, 94, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+}
+
+/* Cards & Avatars */
+.blood-avatar, .blood-badge-circle {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, var(--light-red), var(--primary-red));
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+
+.donor-card {
+    transition: all 0.25s ease;
+    border: 1px solid rgba(0, 0, 0, 0.06) !important;
+}
+
+.donor-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--hover-shadow) !important;
+}
+
+.request-card {
+    border: 1px solid rgba(0, 0, 0, 0.06) !important;
+    transition: all 0.25s ease;
+}
+
+.request-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.1) !important;
+}
+
+.card-status-bar {
+    height: 4px;
+    width: 100%;
+}
+
+.bg-gradient-danger {
+    background: linear-gradient(135deg, #d90429 0%, #900c1e 100%);
+}
+
+/* Step Icons */
+.step-icon-wrapper {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Pulse indicator */
+.pulse-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: var(--primary-red);
+    display: inline-block;
+    animation: pulse-red 1.5s infinite;
+}
+
+/* Filter panel */
+.filter-panel {
+    background-color: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Matrix Table */
+.matrix-table th, .matrix-table td {
+    padding: 12px;
+    font-size: 0.95rem;
+}
+
+.matrix-table tbody tr:hover {
+    background-color: #f1f5f9;
+}
+
+/* Footer links */
+.footer-links a {
+    color: #9ca3af;
+    text-decoration: none;
+    transition: color 0.2s ease;
+    display: inline-block;
+    margin-bottom: 6px;
+}
+
+.footer-links a:hover {
+    color: #ffffff;
+}
+
+.footer-facts li {
+    margin-bottom: 8px;
+}
+
+/* Utilities */
+.max-w-700 { max-width: 700px; }
+.max-w-500 { max-width: 500px; }
+
+/* ===================================================
+   MOBILE APP SPECIFIC STYLES (PWA / App View)
+   =================================================== */
+
+@media (max-width: 991px) {
+    body.has-bottom-nav {
+        padding-bottom: 80px; /* Space for the bottom navigation bar */
+    }
+
+    .footer {
+        padding-bottom: 90px !important;
+    }
+}
+
+/* Mobile Bottom Navigation Bar */
+.mobile-bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 64px;
+    background-color: #ffffff;
+    border-top: 1px solid #e2e8f0;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.07);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 1040;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.bottom-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #64748b;
+    text-decoration: none;
+    font-size: 0.68rem;
+    font-weight: 600;
+    width: 20%;
+    transition: all 0.2s ease;
+}
+
+.bottom-nav-item i {
+    font-size: 1.25rem;
+    margin-bottom: 3px;
+    transition: transform 0.2s ease;
+}
+
+.bottom-nav-item:hover,
+.bottom-nav-item.active {
+    color: var(--primary-red);
+}
+
+.bottom-nav-item.active i {
+    transform: scale(1.12);
+}
+
+/* Floating Center Action Button (Register) */
+.nav-center-action {
+    position: relative;
+    top: -12px;
+}
+
+.nav-fab-btn {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, var(--light-red), var(--primary-red));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff !important;
+    font-size: 1.25rem;
+    box-shadow: 0 4px 15px rgba(217, 4, 41, 0.45);
+    border: 3px solid #ffffff;
+    transition: transform 0.2s ease;
+}
+
+.nav-center-action:hover .nav-fab-btn,
+.nav-center-action.active .nav-fab-btn {
+    transform: scale(1.08);
+}

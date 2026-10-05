@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>{% block title %}Blood Donor Finder | Save Lives Today{% endblock %}</title>
+    
+    <!-- Mobile PWA Meta Tags -->
+    <meta name="theme-color" content="#d90429">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="RaktSetu">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='icons/favicon.png') }}">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='icons/icon-192.png') }}">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="has-bottom-nav">
+
+    <!-- Top Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-blood-nav sticky-top shadow-sm">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center gap-2 fw-bold" href="{{ url_for('home') }}">
+                <span class="blood-drop-icon"><i class="fa-solid fa-droplet text-danger"></i></span>
+                <span>Rakt<span class="text-danger">Setu</span> <small class="brand-sub">App</small></span>
+            </a>
+
+            <!-- Mobile Install Button Header Icon -->
+            <button id="pwa-install-btn" class="btn btn-outline-light btn-sm rounded-pill d-lg-none ms-auto me-2 px-2 py-1 small" style="display: none !important;">
+                <i class="fa-solid fa-download me-1"></i> Install
+            </button>
+
+            <button class="navbar-toggler d-none d-lg-block" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{{ url_for('home') }}">
+                            <i class="fa-solid fa-house me-1"></i> Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/donors' %}active{% endif %}" href="{{ url_for('donors') }}">
+                            <i class="fa-solid fa-users me-1"></i> Find Donors
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/requests' %}active{% endif %}" href="{{ url_for('requests_page') }}">
+                            <i class="fa-solid fa-bell me-1"></i> Emergency Requests
+                            <span class="badge bg-danger rounded-pill pulse-badge">Urgent</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/compatibility' %}active{% endif %}" href="{{ url_for('compatibility') }}">
+                            <i class="fa-solid fa-diagram-project me-1"></i> Blood Matrix
+                        </a>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center gap-2">
+                    <a href="{{ url_for('requests_page') }}#post-request" class="btn btn-outline-light btn-sm rounded-pill px-3">
+                        <i class="fa-solid fa-hand-holding-medical me-1"></i> Request Blood
+                    </a>
+                    <a href="{{ url_for('register') }}" class="btn btn-danger btn-sm rounded-pill px-3 shadow-sm btn-glow">
+                        <i class="fa-solid fa-heart me-1"></i> Register as Donor
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile In-App Banner for PWA Install -->
+    <div id="mobile-install-banner" class="alert alert-dark border-danger bg-dark text-white rounded-0 py-2 px-3 d-flex align-items-center justify-content-between mb-0" style="display: none;">
+        <div class="d-flex align-items-center gap-2">
+            <img src="{{ url_for('static', filename='icons/icon-192.png') }}" width="28" height="28" class="rounded-circle" alt="App Icon">
+            <span class="small">Install <strong>RaktSetu Mobile App</strong> for instant access</span>
+        </div>
+        <button id="banner-install-btn" class="btn btn-danger btn-sm rounded-pill px-3 py-1 fw-bold">
+            Install
+        </button>
+    </div>
+
+    <!-- Flash Messages -->
+    <div class="container mt-3">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show shadow-sm d-flex align-items-center" role="alert">
+                        <i class="fa-solid fa-circle-info me-2 fs-5"></i>
+                        <div>{{ message }}</div>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <!-- Main Body Content -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Native-Style Mobile Bottom Navigation Bar (Visible only on mobile screens) -->
+    <nav class="mobile-bottom-nav d-lg-none">
+        <a href="{{ url_for('home') }}" class="bottom-nav-item {% if request.path == '/' %}active{% endif %}">
+            <i class="fa-solid fa-house"></i>
+            <span>Home</span>
+        </a>
+        <a href="{{ url_for('donors') }}" class="bottom-nav-item {% if request.path == '/donors' %}active{% endif %}">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <span>Search</span>
+        </a>
+        <a href="{{ url_for('register') }}" class="bottom-nav-item nav-center-action {% if request.path == '/register' %}active{% endif %}">
+            <div class="nav-fab-btn shadow">
+                <i class="fa-solid fa-plus"></i>
+            </div>
+            <span>Register</span>
+        </a>
+        <a href="{{ url_for('requests_page') }}" class="bottom-nav-item {% if request.path == '/requests' %}active{% endif %}">
+            <i class="fa-solid fa-bell"></i>
+            <span>Urgent</span>
+        </a>
+        <a href="{{ url_for('compatibility') }}" class="bottom-nav-item {% if request.path == '/compatibility' %}active{% endif %}">
+            <i class="fa-solid fa-droplet"></i>
+            <span>Matrix</span>
+        </a>
+    </nav>
+
+    <!-- Footer (Hidden or compact on mobile) -->
+    <footer class="footer bg-dark text-white pt-5 pb-5 mt-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <i class="fa-solid fa-droplet text-danger fs-3"></i>
+                        <h5 class="mb-0 fw-bold">Blood Donor Finder</h5>
+                    </div>
+                    <p class="text-secondary small">
+                        A community-driven digital bridge connecting voluntary blood donors directly with patients in emergency need.
+                    </p>
+                    <div class="d-flex gap-3 text-secondary">
+                        <span class="badge bg-secondary-subtle text-light border border-secondary">
+                            <i class="fa-solid fa-phone me-1 text-danger"></i> Helpline: 104 / 108
+                        </span>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <h6 class="text-white fw-semibold mb-3">Quick Links</h6>
+                    <ul class="list-unstyled footer-links small">
+                        <li><a href="{{ url_for('home') }}">Home</a></li>
+                        <li><a href="{{ url_for('donors') }}">Find Donors</a></li>
+                        <li><a href="{{ url_for('register') }}">Register as Donor</a></li>
+                        <li><a href="{{ url_for('requests_page') }}">Emergency Feed</a></li>
+                        <li><a href="{{ url_for('compatibility') }}">Compatibility Chart</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h6 class="text-white fw-semibold mb-3">Blood Facts</h6>
+                    <ul class="list-unstyled footer-facts small text-secondary">
+                        <li><i class="fa-solid fa-check text-danger me-2"></i><strong>O-</strong> is the Universal Donor</li>
+                        <li><i class="fa-solid fa-check text-danger me-2"></i><strong>AB+</strong> is the Universal Recipient</li>
+                        <li><i class="fa-solid fa-check text-danger me-2"></i>You can donate every 90 days</li>
+                        <li><i class="fa-solid fa-check text-danger me-2"></i>1 donation helps up to 3 people</li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h6 class="text-white fw-semibold mb-3">Emergency Action</h6>
+                    <p class="small text-secondary mb-3">Need blood immediately for a hospitalized patient?</p>
+                    <a href="{{ url_for('requests_page') }}" class="btn btn-outline-danger btn-sm w-100 rounded-pill">
+                        <i class="fa-solid fa-bullhorn me-1"></i> Post Urgent Blood Need
+                    </a>
+                </div>
+            </div>
+            <hr class="border-secondary my-4">
+            <div class="d-flex flex-wrap justify-content-between align-items-center small text-secondary">
+                <p class="mb-0">&copy; 2026 Blood Donor Finder (RaktSetu). Mini Project.</p>
+                <p class="mb-0"><i class="fa-solid fa-heart text-danger"></i> Donate Blood, Be a Hero</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+    <!-- Register PWA Service Worker -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(reg => console.log('RaktSetu PWA Service Worker Registered', reg))
+                    .catch(err => console.log('Service Worker registration failed:', err));
+            });
+        }
+
+        // PWA Install prompt handler
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            const banner = document.getElementById('mobile-install-banner');
+            const topBtn = document.getElementById('pwa-install-btn');
+            if (banner) banner.style.display = 'flex';
+            if (topBtn) topBtn.style.display = 'inline-block';
+        });
+
+        function triggerInstall() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('User installed the App');
+                    }
+                    deferredPrompt = null;
+                    const banner = document.getElementById('mobile-install-banner');
+                    if (banner) banner.style.display = 'none';
+                });
+            }
+        }
+
+        const bannerBtn = document.getElementById('banner-install-btn');
+        const topBtn = document.getElementById('pwa-install-btn');
+        if (bannerBtn) bannerBtn.addEventListener('click', triggerInstall);
+        if (topBtn) topBtn.addEventListener('click', triggerInstall);
+    </script>
+</body>
+</html>
