@@ -3,319 +3,148 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Login – RaktSetu</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <title>Admin Login - RaktSetu</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            box-sizing: border-box;
+        }
 
         body {
-            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
             min-height: 100vh;
             display: flex;
-            flex-direction: column;
-            background: #ededec;
-            /* Subtle noise texture via gradient */
-            background-image:
-                radial-gradient(ellipse at 20% 30%, rgba(255,255,255,0.6) 0%, transparent 60%),
-                radial-gradient(ellipse at 80% 70%, rgba(200,200,195,0.4) 0%, transparent 55%);
-        }
-
-        /* ── CENTER STAGE ── */
-        .page-center {
-            flex: 1;
-            display: flex;
             align-items: center;
             justify-content: center;
-            padding: 40px 20px;
-            position: relative;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #fff5f5, #ffe1e1);
         }
 
-        /* Sparkle decoration bottom-right of background */
-        .sparkle {
-            position: absolute;
-            bottom: 60px;
-            right: 60px;
-            color: #bbb;
-            font-size: 26px;
-            pointer-events: none;
-            transform: rotate(15deg);
+        .login-card {
+            width: 92%;
+            max-width: 400px;
+            background: white;
+            padding: 35px;
+            border-radius: 20px;
+            box-shadow: 0 10px 35px rgba(0,0,0,0.15);
         }
 
-        /* ── CARD ── */
-        .admin-card {
-            background: #fff;
-            border-radius: 22px;
-            box-shadow:
-                0 4px 6px rgba(0,0,0,0.04),
-                0 10px 40px rgba(0,0,0,0.10),
-                0 2px 4px rgba(0,0,0,0.06);
-            width: 100%;
-            max-width: 440px;
-            padding: 38px 38px 30px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        /* ── CARD TITLE ── */
-        .card-title {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            margin-bottom: 30px;
-        }
-
-        .lock-icon-wrap {
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        /* Warm glow behind lock */
-        .lock-icon-wrap::before {
-            content: '';
-            position: absolute;
-            width: 52px;
-            height: 52px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(220,120,60,0.55) 0%, rgba(200,80,40,0.25) 45%, transparent 70%);
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-        }
-        .lock-icon-wrap i {
-            font-size: 28px;
-            color: #8b1a1a;
-            position: relative;
-            z-index: 1;
-            filter: drop-shadow(0 2px 6px rgba(160,40,40,0.4));
-        }
-
-        .card-title h1 {
-            font-size: 22px;
-            font-weight: 700;
-            color: #1a1a1a;
-            letter-spacing: 0.2px;
-        }
-        .card-title h1 span { color: #c0392b; }
-
-        /* ── FLASH MESSAGES ── */
-        .flash-msg {
-            padding: 10px 14px;
-            border-radius: 8px;
-            margin-bottom: 18px;
-            font-size: 13px;
+        .logo {
             text-align: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-        .flash-danger {
-            background: #fef2f2;
-            color: #b91c1c;
-            border: 1px solid #fca5a5;
-        }
-        .flash-success {
-            background: #f0fdf4;
-            color: #166534;
-            border: 1px solid #86efac;
+            font-size: 42px;
         }
 
-        /* ── FORM FIELDS ── */
-        .field-label {
-            font-size: 13px;
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 7px;
+        h1 {
+            text-align: center;
+            margin: 8px 0;
+            color: #c62828;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #777;
+            margin-bottom: 25px;
+        }
+
+        label {
             display: block;
+            margin: 12px 0 6px;
+            font-weight: bold;
         }
 
-        .input-wrap {
-            margin-bottom: 20px;
-        }
-
-        .input-wrap input {
+        input {
             width: 100%;
-            padding: 12px 16px;
-            border: 1.5px solid #ddd;
+            padding: 13px;
+            border: 1px solid #ddd;
             border-radius: 10px;
             font-size: 15px;
-            color: #333;
-            background: #fff;
+        }
+
+        input:focus {
             outline: none;
-            transition: border-color 0.2s, box-shadow 0.2s;
-        }
-        .input-wrap input::placeholder { color: #bbb; }
-        .input-wrap input:focus {
-            border-color: #c0392b;
-            box-shadow: 0 0 0 3px rgba(192,57,43,0.10);
+            border-color: #c62828;
         }
 
-        /* ── BOTTOM ROW: decoration + button ── */
-        .card-bottom {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 16px;
-            margin-top: 10px;
-        }
-
-        /* Blood drop + heartbeat SVG decoration */
-        .drop-decoration {
-            flex-shrink: 0;
-            width: 90px;
-            height: 56px;
-        }
-
-        /* LOGIN button */
-        .login-btn {
-            flex: 1;
-            padding: 14px 10px;
-            background: linear-gradient(135deg, #9b1a1a 0%, #c0392b 60%, #8b1111 100%);
-            color: #fff;
+        button {
+            width: 100%;
+            margin-top: 22px;
+            padding: 13px;
             border: none;
-            border-radius: 12px;
-            font-size: 15px;
-            font-weight: 700;
-            letter-spacing: 2.5px;
+            border-radius: 10px;
+            background: #c62828;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
             cursor: pointer;
-            transition: all 0.2s;
-            box-shadow: 0 4px 16px rgba(192,57,43,0.35);
         }
-        .login-btn:hover {
-            background: linear-gradient(135deg, #7b1010 0%, #a93226 100%);
-            box-shadow: 0 6px 22px rgba(192,57,43,0.45);
-            transform: translateY(-1px);
-        }
-        .login-btn:active { transform: translateY(0); }
 
-        /* Back link */
-        .back-link {
-            display: block;
+        button:hover {
+            background: #a91f1f;
+        }
+
+        .error {
+            background: #ffebee;
+            color: #c62828;
+            padding: 10px;
+            border-radius: 8px;
             text-align: center;
-            margin-top: 18px;
-            color: #999;
-            font-size: 13px;
-            text-decoration: none;
-            transition: color 0.2s;
+            margin-bottom: 15px;
         }
-        .back-link:hover { color: #c0392b; }
-        .back-link i { margin-right: 4px; }
 
-        /* ── FOOTER ── */
-        .page-footer {
-            background: #2a2a2a;
-            color: #aaa;
+        .admin-label {
             text-align: center;
             font-size: 13px;
-            padding: 14px 20px;
-            letter-spacing: 0.3px;
-        }
-        .page-footer a {
-            color: #ccc;
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-        .page-footer a:hover { color: #fff; }
-        .page-footer .sep {
-            margin: 0 10px;
-            color: #555;
-        }
-
-        @media (max-width: 480px) {
-            .admin-card { padding: 28px 22px 24px; }
-            .card-bottom { flex-direction: column; }
-            .drop-decoration { display: none; }
-            .login-btn { width: 100%; }
+            color: #888;
+            margin-top: 20px;
         }
     </style>
 </head>
+
 <body>
 
-<div class="page-center">
+<div class="login-card">
 
-    <!-- Sparkle accent -->
-    <div class="sparkle">✦</div>
+    <div class="logo">🩸</div>
 
-    <!-- ── ADMIN CARD ── -->
-    <div class="admin-card">
+    <h1>RaktSetu</h1>
 
-        <!-- Title -->
-        <div class="card-title">
-            <div class="lock-icon-wrap">
-                <i class="fa-solid fa-lock"></i>
-            </div>
-            <h1>Rakt<span>Setu</span> Admin</h1>
-        </div>
+    <div class="subtitle">Administrator Login</div>
 
-        <!-- Flash messages -->
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                    <div class="flash-msg flash-{{ category }}">
-                        <i class="fa-solid fa-{% if category == 'danger' %}circle-exclamation{% else %}circle-check{% endif %}"></i>
-                        {{ message }}
-                    </div>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="error">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
 
-        <!-- Form -->
-        <form method="POST">
+    <form method="POST">
 
-            <div class="input-wrap">
-                <label class="field-label">Username</label>
-                <input type="text" name="username" placeholder="Username" required autocomplete="username">
-            </div>
+        <label for="username">Admin Username</label>
+        <input
+            type="text"
+            id="username"
+            name="username"
+            placeholder="Enter admin username"
+            required
+        >
 
-            <div class="input-wrap">
-                <label class="field-label">Password</label>
-                <input type="password" name="password" placeholder="Password" required autocomplete="current-password">
-            </div>
+        <label for="password">Admin Password</label>
+        <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Enter admin password"
+            required
+        >
 
-            <!-- Bottom: decoration + button -->
-            <div class="card-bottom">
+        <button type="submit">🔐 Login to Admin Panel</button>
 
-                <!-- Blood drop + heartbeat decoration -->
-                <svg class="drop-decoration" viewBox="0 0 90 56" fill="none">
-                    <!-- Blood drop -->
-                    <defs>
-                        <radialGradient id="g1" cx="38%" cy="32%" r="65%">
-                            <stop offset="0%" stop-color="#e74c3c"/>
-                            <stop offset="100%" stop-color="#7b0000"/>
-                        </radialGradient>
-                    </defs>
-                    <!-- Small drop shape -->
-                    <path d="M22 4 C22 4 8 22 8 32 C8 42 14 48 22 48 C30 48 36 42 36 32 C36 22 22 4 22 4Z"
-                          fill="url(#g1)"/>
-                    <!-- White cross on drop -->
-                    <rect x="19" y="25" width="6" height="16" rx="2" fill="white" opacity="0.85"/>
-                    <rect x="14" y="30" width="16" height="6" rx="2" fill="white" opacity="0.85"/>
-                    <!-- Heartbeat line -->
-                    <polyline points="32,36 42,36 46,26 50,44 54,28 58,40 62,36 90,36"
-                              stroke="#c0392b" stroke-width="2.5"
-                              stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
+    </form>
 
-                <button type="submit" class="login-btn">LOGIN</button>
-            </div>
-
-        </form>
-
-        <a href="/login" class="back-link">
-            <i class="fa-solid fa-arrow-left"></i> Back to Login
-        </a>
-
+    <div class="admin-label">
+        Authorized administrators only
     </div>
-</div>
 
-<!-- ── FOOTER ── -->
-<div class="page-footer">
-    <a href="/index">About RaktSetu</a>
-    <span class="sep">•</span>
-    <a href="/index">Contact Support</a>
-    <span class="sep">•</span>
-    &copy; 2026
 </div>
 
 </body>

@@ -212,3 +212,82 @@ def toggle_donor_availability(donor_id):
     cursor.execute("UPDATE donors SET is_available = CASE WHEN is_available = 1 THEN 0 ELSE 1 END WHERE id = ?", (donor_id,))
     conn.commit()
     conn.close()
+
+# =========================
+# Admin Edit / Delete Functions
+# =========================
+
+def delete_donor(donor_id):
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM donors WHERE id = ?", (donor_id,))
+    conn.commit()
+    conn.close()
+
+
+def get_donor(donor_id):
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM donors WHERE id = ?", (donor_id,))
+    donor = cursor.fetchone()
+    conn.close()
+    return donor
+
+
+def update_donor(donor_id, name, blood_group, age, gender, phone, email,
+                 city, state, pincode, last_donation_date, is_available):
+    conn = get_db()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        UPDATE donors
+        SET name = ?, blood_group = ?, age = ?, gender = ?, phone = ?,
+            email = ?, city = ?, state = ?, pincode = ?,
+            last_donation_date = ?, is_available = ?
+        WHERE id = ?
+    """, (
+        name, blood_group, age, gender, phone, email,
+        city, state, pincode, last_donation_date,
+        is_available, donor_id
+    ))
+
+    conn.commit()
+    conn.close()
+
+
+def delete_request(request_id):
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM requests WHERE id = ?", (request_id,))
+    conn.commit()
+    conn.close()
+
+
+def get_request(request_id):
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM requests WHERE id = ?", (request_id,))
+    request = cursor.fetchone()
+    conn.close()
+    return request
+
+
+def update_request(request_id, patient_name, blood_group, units, hospital,
+                   city, contact_name, contact_phone, urgency, status, note):
+    conn = get_db()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        UPDATE requests
+        SET patient_name = ?, blood_group = ?, units = ?, hospital = ?,
+            city = ?, contact_name = ?, contact_phone = ?,
+            urgency = ?, status = ?, note = ?
+        WHERE id = ?
+    """, (
+        patient_name, blood_group, units, hospital,
+        city, contact_name, contact_phone,
+        urgency, status, note, request_id
+    ))
+
+    conn.commit()
+    conn.close()
