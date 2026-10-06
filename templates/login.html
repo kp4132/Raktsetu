@@ -16,191 +16,120 @@
             flex-direction: column;
         }
 
-        /* ── TOP HEADER ── */
-        .top-header {
+        /* ── TOP HEADER BAR ── */
+        .top-bar {
+            background: #b71c1c;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 14px;
-            padding: 18px 40px;
-            border-bottom: 2px solid #e8e8e8;
+            gap: 12px;
+            padding: 14px 30px;
         }
-        .header-line {
-            flex: 1;
-            height: 2px;
-            background: linear-gradient(to right, transparent, #c0392b);
+        .top-bar-icon {
+            width: 36px;
+            height: 36px;
         }
-        .header-line.right {
-            background: linear-gradient(to left, transparent, #c0392b);
-        }
-        .header-brand {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 26px;
-            font-weight: 800;
-            color: #1a1a1a;
-            white-space: nowrap;
-        }
-        .header-brand span { color: #c0392b; }
-        .header-icon {
-            width: 38px;
-            height: 38px;
-            background: #c0392b;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 18px;
+        .top-bar-title {
+            color: #fff;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
         }
 
         /* ── MAIN CONTENT ── */
-        .main-content {
+        .main {
             flex: 1;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 30px 20px 20px;
-            position: relative;
-            overflow: hidden;
+            padding: 50px 30px 40px;
+            background: #fff;
         }
 
-        /* Left red wave decoration */
-        .wave-left {
-            position: absolute;
-            bottom: 0; left: 0;
-            width: 220px; height: 220px;
-            background: radial-gradient(ellipse at bottom left, rgba(192,57,43,0.18) 0%, transparent 70%);
-            border-radius: 0 100% 0 0;
-            pointer-events: none;
-        }
-        .wave-right {
-            position: absolute;
-            bottom: 0; right: 0;
-            width: 180px; height: 160px;
-            background: radial-gradient(ellipse at bottom right, rgba(192,57,43,0.13) 0%, transparent 70%);
-            border-radius: 100% 0 0 0;
-            pointer-events: none;
-        }
-
-        .content-wrapper {
+        .content-wrap {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 60px;
+            gap: 70px;
             width: 100%;
-            max-width: 960px;
-            position: relative;
-            z-index: 1;
+            max-width: 900px;
         }
 
-        /* ── LEFT BRANDING ── */
-        .brand-panel {
+        /* ── LEFT: BRAND ── */
+        .brand-side {
             flex: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
             text-align: center;
-            max-width: 420px;
+            max-width: 380px;
         }
 
-        /* Blood drop SVG logo */
-        .logo-graphic {
-            position: relative;
-            width: 200px;
-            height: 220px;
-            margin-bottom: 18px;
-        }
-        .heart-bg {
-            position: absolute;
-            top: 10px; left: 10px;
-            width: 180px; height: 180px;
-            opacity: 0.15;
-        }
-        .drop-svg {
-            position: absolute;
-            top: 0; left: 50%;
-            transform: translateX(-50%);
-            width: 160px;
-            filter: drop-shadow(0 8px 24px rgba(192,57,43,0.35));
-        }
-        .heartbeat-line {
-            position: absolute;
-            bottom: 12px; left: 0; right: 0;
-            height: 28px;
+        .drop-logo {
+            width: 230px;
+            height: 260px;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 8px 24px rgba(183,28,28,0.25));
         }
 
         .brand-name {
-            font-size: 38px;
+            font-size: 42px;
             font-weight: 900;
-            letter-spacing: -1px;
-            color: #1a1a1a;
+            color: #7b0000;
             line-height: 1;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
         }
-        .brand-name span { color: #c0392b; }
 
         .brand-sub {
-            font-size: 11px;
+            font-size: 12px;
+            font-weight: 700;
             letter-spacing: 3px;
-            color: #555;
-            margin: 6px 0 14px;
+            color: #333;
             text-transform: uppercase;
+            margin-bottom: 12px;
         }
-        .brand-sub .dot { color: #c0392b; margin: 0 6px; }
+        .brand-sub .dot { color: #b71c1c; margin: 0 8px; }
 
         .brand-tagline {
-            font-family: 'Georgia', serif;
+            font-family: Georgia, 'Times New Roman', serif;
             font-style: italic;
-            font-size: 17px;
-            color: #c0392b;
+            font-size: 18px;
+            color: #b71c1c;
             font-weight: 600;
-            position: relative;
-            display: inline-block;
-            padding-bottom: 6px;
-        }
-        .brand-tagline::after {
-            content: '';
-            display: block;
-            width: 80%;
-            height: 2px;
-            background: #c0392b;
-            margin: 6px auto 0;
-            border-radius: 2px;
         }
 
-        /* ── RIGHT LOGIN CARD ── */
+        /* ── RIGHT: LOGIN CARD ── */
         .login-card {
-            background: #fff;
-            border-radius: 16px;
-            box-shadow: 0 4px 40px rgba(0,0,0,0.13);
-            padding: 42px 38px 36px;
-            width: 360px;
+            background: #f5f5f5;
+            border-radius: 18px;
+            box-shadow: 0 4px 32px rgba(0,0,0,0.10);
+            padding: 40px 36px 36px;
+            width: 340px;
             flex-shrink: 0;
         }
 
-        .login-title {
-            text-align: center;
-            font-size: 24px;
-            font-weight: 700;
-            color: #1a1a1a;
-            margin-bottom: 6px;
+        .login-heading {
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
+            font-size: 26px;
+            font-weight: 800;
+            color: #111;
+            margin-bottom: 8px;
         }
-        .login-title i { color: #1a1a1a; font-size: 20px; }
+        .login-heading i { font-size: 22px; color: #111; }
 
-        .login-divider {
-            width: 40px;
+        .heading-bar {
+            width: 36px;
             height: 3px;
-            background: #c0392b;
+            background: #b71c1c;
             border-radius: 2px;
-            margin: 8px auto 28px;
+            margin: 0 auto 24px;
         }
 
-        /* Flash messages */
+        /* Flash */
         .flash-msg {
             padding: 10px 14px;
             border-radius: 8px;
@@ -211,12 +140,31 @@
         .flash-danger { background: #fef2f2; color: #b91c1c; border: 1px solid #fca5a5; }
         .flash-success { background: #f0fdf4; color: #166534; border: 1px solid #86efac; }
 
-        /* Inputs */
+        /* User button (red pill) */
+        .user-pill {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 13px;
+            background: #b71c1c;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 18px;
+            cursor: default;
+        }
+
+        /* Input fields */
         .input-group {
             position: relative;
-            margin-bottom: 18px;
+            margin-bottom: 14px;
         }
-        .input-group i {
+        .input-group i.prefix {
             position: absolute;
             left: 14px;
             top: 50%;
@@ -227,203 +175,186 @@
         .input-group input {
             width: 100%;
             padding: 13px 14px 13px 40px;
-            border: 1.5px solid #e0e0e0;
+            background: #eee;
+            border: none;
             border-radius: 10px;
             font-size: 15px;
             color: #333;
-            background: #fafafa;
             outline: none;
-            transition: border-color 0.2s;
+            transition: background 0.2s, box-shadow 0.2s;
         }
+        .input-group input::placeholder { color: #aaa; }
         .input-group input:focus {
-            border-color: #c0392b;
-            background: #fff;
+            background: #e5e5e5;
+            box-shadow: 0 0 0 2px rgba(183,28,28,0.20);
         }
-        .input-group input::placeholder { color: #bbb; }
 
         /* Eye toggle */
         .eye-btn {
             position: absolute;
-            right: 14px;
+            right: 12px;
             top: 50%;
             transform: translateY(-50%);
             background: none;
             border: none;
-            cursor: pointer;
             color: #aaa;
+            cursor: pointer;
             font-size: 15px;
             padding: 0;
         }
-        .eye-btn:hover { color: #c0392b; }
-
-        /* Tabs: User / Admin */
-        .login-tabs {
-            display: flex;
-            border-radius: 10px;
-            overflow: hidden;
-            border: 1.5px solid #e0e0e0;
-            margin-bottom: 24px;
-        }
-        .tab-btn {
-            flex: 1;
-            padding: 10px;
-            border: none;
-            background: #fafafa;
-            color: #888;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .tab-btn.active {
-            background: #c0392b;
-            color: #fff;
-        }
+        .eye-btn:hover { color: #b71c1c; }
 
         /* Sign In button */
         .signin-btn {
             width: 100%;
             padding: 14px;
-            background: #c0392b;
-            color: white;
+            background: #b71c1c;
+            color: #fff;
             border: none;
             border-radius: 10px;
             font-size: 16px;
             font-weight: 700;
             cursor: pointer;
-            letter-spacing: 0.5px;
-            transition: background 0.2s, transform 0.1s;
+            margin-top: 6px;
+            margin-bottom: 2px;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
-            margin-top: 6px;
+            transition: background 0.2s, transform 0.1s;
         }
-        .signin-btn:hover { background: #a93226; }
+        .signin-btn:hover { background: #8b0000; }
         .signin-btn:active { transform: scale(0.98); }
 
         .forgot-link {
             display: block;
             text-align: center;
-            margin-top: 16px;
-            color: #c0392b;
+            margin-top: 14px;
+            color: #b71c1c;
             font-size: 14px;
-            text-decoration: none;
             font-weight: 500;
+            text-decoration: none;
         }
         .forgot-link:hover { text-decoration: underline; }
 
         /* ── FOOTER ── */
-        .bottom-footer {
+        .footer {
             background: #1a1a1a;
-            color: #ccc;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 0;
-            padding: 0;
-            height: 52px;
-            flex-wrap: wrap;
         }
-        .footer-item {
+        .footer-inner {
             display: flex;
             align-items: center;
+            width: 100%;
+            max-width: 800px;
+        }
+        .footer-item {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             gap: 8px;
-            padding: 0 24px;
             color: #ccc;
             text-decoration: none;
             font-size: 14px;
-            height: 100%;
+            padding: 15px 10px;
             transition: color 0.2s;
             white-space: nowrap;
         }
         .footer-item:hover { color: #fff; }
-        .footer-item i { color: #c0392b; font-size: 16px; }
+        .footer-item i { color: #c0392b; }
         .footer-sep {
-            color: #444;
-            font-size: 20px;
-            line-height: 52px;
-            user-select: none;
+            width: 1px;
+            height: 20px;
+            background: #444;
+            flex-shrink: 0;
         }
 
         /* ── RESPONSIVE ── */
-        @media (max-width: 720px) {
-            .content-wrapper { flex-direction: column; gap: 30px; }
-            .brand-panel { max-width: 100%; }
-            .login-card { width: 100%; max-width: 380px; padding: 30px 24px; }
-            .logo-graphic { width: 150px; height: 165px; }
-            .drop-svg { width: 120px; }
-            .brand-name { font-size: 30px; }
-            .footer-item { padding: 0 12px; font-size: 12px; }
+        @media (max-width: 700px) {
+            .content-wrap { flex-direction: column; gap: 30px; }
+            .brand-side { max-width: 100%; }
+            .drop-logo { width: 170px; height: 190px; }
+            .brand-name { font-size: 32px; }
+            .login-card { width: 100%; max-width: 360px; padding: 28px 22px; }
+            .footer-item { font-size: 12px; padding: 13px 6px; }
         }
     </style>
 </head>
 <body>
 
-<!-- ── HEADER ── -->
-<div class="top-header">
-    <div class="header-line"></div>
-    <div class="header-brand">
-        <div class="header-icon"><i class="fa-solid fa-plus"></i></div>
-        Rakt<span>Setu</span>
-    </div>
-    <div class="header-line right"></div>
+<!-- ── TOP HEADER BAR ── -->
+<div class="top-bar">
+    <!-- Blood drop icon in white -->
+    <svg class="top-bar-icon" viewBox="0 0 36 44" fill="none">
+        <path d="M18 2 C18 2 3 18 3 28 C3 37 10 43 18 43 C26 43 33 37 33 28 C33 18 18 2 18 2Z" fill="white"/>
+        <!-- hand arc -->
+        <path d="M9 35 Q14 28 18 30 Q22 28 27 35" stroke="#b71c1c" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <!-- cross -->
+        <rect x="15" y="20" width="6" height="14" rx="2" fill="#b71c1c"/>
+        <rect x="10" y="25" width="16" height="5" rx="2" fill="#b71c1c"/>
+    </svg>
+    <span class="top-bar-title">Rakt Setu</span>
 </div>
 
 <!-- ── MAIN ── -->
-<div class="main-content">
-    <div class="wave-left"></div>
-    <div class="wave-right"></div>
-
-    <div class="content-wrapper">
+<div class="main">
+    <div class="content-wrap">
 
         <!-- LEFT: Branding -->
-        <div class="brand-panel">
-            <div class="logo-graphic">
-                <!-- Heart background -->
-                <svg class="heart-bg" viewBox="0 0 200 200" fill="none">
-                    <path d="M100 170 C60 140 10 110 10 65 C10 30 35 10 65 10 C80 10 95 18 100 30 C105 18 120 10 135 10 C165 10 190 30 190 65 C190 110 140 140 100 170Z"
-                          fill="#c0392b" opacity="0.18"/>
-                </svg>
-                <!-- Blood drop with cross -->
-                <svg class="drop-svg" viewBox="0 0 160 200" fill="none">
-                    <defs>
-                        <radialGradient id="dropGrad" cx="40%" cy="35%" r="65%">
-                            <stop offset="0%" stop-color="#e74c3c"/>
-                            <stop offset="100%" stop-color="#7b0000"/>
-                        </radialGradient>
-                    </defs>
-                    <!-- Drop shape -->
-                    <path d="M80 10 C80 10 20 80 20 120 C20 155 47 178 80 178 C113 178 140 155 140 120 C140 80 80 10 80 10Z"
-                          fill="url(#dropGrad)"/>
-                    <!-- White highlight -->
-                    <ellipse cx="60" cy="75" rx="14" ry="22" fill="white" opacity="0.22" transform="rotate(-20 60 75)"/>
-                    <!-- White cross -->
-                    <rect x="68" y="95" width="24" height="60" rx="6" fill="white" opacity="0.92"/>
-                    <rect x="50" y="113" width="60" height="24" rx="6" fill="white" opacity="0.92"/>
-                    <!-- Hand arc -->
-                    <path d="M35 145 Q50 125 80 130 Q110 125 125 145" stroke="white" stroke-width="4" fill="none" stroke-linecap="round" opacity="0.55"/>
-                </svg>
-                <!-- Heartbeat line -->
-                <svg class="heartbeat-line" viewBox="0 0 200 28" fill="none">
-                    <polyline points="0,14 30,14 40,4 50,24 60,4 70,22 80,14 200,14"
-                              stroke="#c0392b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-            </div>
+        <div class="brand-side">
+            <!-- Big blood drop SVG -->
+            <svg class="drop-logo" viewBox="0 0 230 260" fill="none">
+                <defs>
+                    <radialGradient id="dropG" cx="38%" cy="28%" r="65%">
+                        <stop offset="0%" stop-color="#ef5350"/>
+                        <stop offset="55%" stop-color="#c62828"/>
+                        <stop offset="100%" stop-color="#6a0000"/>
+                    </radialGradient>
+                    <radialGradient id="shineG" cx="35%" cy="30%" r="50%">
+                        <stop offset="0%" stop-color="rgba(255,255,255,0.45)"/>
+                        <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+                    </radialGradient>
+                </defs>
 
-            <div class="brand-name">Rakt<span>Setu</span></div>
-            <div class="brand-sub">Donate Blood <span class="dot">●</span> Save Lives</div>
+                <!-- Main drop -->
+                <path d="M115 8 C115 8 28 95 28 150 C28 205 67 248 115 248 C163 248 202 205 202 150 C202 95 115 8 115 8Z"
+                      fill="url(#dropG)"/>
+
+                <!-- Shine highlight -->
+                <ellipse cx="88" cy="90" rx="28" ry="48"
+                         fill="url(#shineG)"
+                         transform="rotate(-20 88 90)"/>
+
+                <!-- White cross -->
+                <rect x="100" y="110" width="30" height="80" rx="9" fill="white" opacity="0.93"/>
+                <rect x="72" y="135" width="86" height="30" rx="9" fill="white" opacity="0.93"/>
+
+                <!-- Hand / wave swoosh -->
+                <path d="M55 195 Q80 168 115 175 Q150 168 175 195"
+                      stroke="white" stroke-width="9"
+                      fill="none" stroke-linecap="round" opacity="0.80"/>
+                <path d="M42 210 Q75 185 115 192 Q155 185 188 210"
+                      stroke="white" stroke-width="6"
+                      fill="none" stroke-linecap="round" opacity="0.45"/>
+            </svg>
+
+            <div class="brand-name">Rakt Setu</div>
+            <div class="brand-sub">Donate Blood <span class="dot">•</span> Save Lives</div>
             <div class="brand-tagline">Together We Build a Healthier Tomorrow</div>
         </div>
 
         <!-- RIGHT: Login Card -->
         <div class="login-card">
 
-            <div class="login-title">
+            <div class="login-heading">
                 <i class="fa-solid fa-circle-user"></i> Login
             </div>
-            <div class="login-divider"></div>
+            <div class="heading-bar"></div>
 
+            <!-- Flash messages -->
             {% with messages = get_flashed_messages(with_categories=true) %}
                 {% if messages %}
                     {% for category, message in messages %}
@@ -432,90 +363,63 @@
                 {% endif %}
             {% endwith %}
 
-            <!-- Tab switcher -->
-            <div class="login-tabs">
-                <button class="tab-btn active" onclick="setTab('user', this)">
-                    <i class="fa-solid fa-user"></i> User
-                </button>
-                <button class="tab-btn" onclick="setTab('admin', this)">
-                    <i class="fa-solid fa-shield-halved"></i> Admin
+            <!-- User button -->
+            <div class="user-pill">
+                <i class="fa-solid fa-user"></i> User
+            </div>
+
+            <!-- Email -->
+            <div class="input-group">
+                <i class="fa-solid fa-envelope prefix"></i>
+                <input type="email" id="emailInput" placeholder="Email" autocomplete="email">
+            </div>
+
+            <!-- Password -->
+            <div class="input-group">
+                <i class="fa-solid fa-lock prefix"></i>
+                <input type="password" id="passInput" placeholder="Password" autocomplete="current-password">
+                <button type="button" class="eye-btn" onclick="togglePass()">
+                    <i class="fa-regular fa-eye" id="eyeIcon"></i>
                 </button>
             </div>
 
-            <!-- User form (no auth, just enter the app) -->
-            <div id="userForm">
-                <div class="input-group">
-                    <i class="fa-solid fa-envelope"></i>
-                    <input type="email" placeholder="Email" id="userEmail">
-                </div>
-                <div class="input-group">
-                    <i class="fa-solid fa-lock"></i>
-                    <input type="password" placeholder="Password" id="userPass">
-                    <button type="button" class="eye-btn" onclick="togglePass('userPass', this)">
-                        <i class="fa-regular fa-eye"></i>
-                    </button>
-                </div>
-                <button class="signin-btn" onclick="window.location.href='/index'">
-                    Sign In <i class="fa-solid fa-arrow-right"></i>
-                </button>
-                <a href="/register" class="forgot-link">New here? Register as Donor →</a>
-            </div>
+            <!-- Sign In -->
+            <button class="signin-btn" onclick="window.location.href='/index'">
+                Sign In <i class="fa-solid fa-arrow-right"></i>
+            </button>
 
-            <!-- Admin form -->
-            <div id="adminForm" style="display:none;">
-                <form method="POST" action="/admin/login">
-                    <div class="input-group">
-                        <i class="fa-solid fa-user-shield"></i>
-                        <input type="text" name="username" placeholder="Admin Username" required>
-                    </div>
-                    <div class="input-group">
-                        <i class="fa-solid fa-lock"></i>
-                        <input type="password" name="password" placeholder="Admin Password" id="adminPass" required>
-                        <button type="button" class="eye-btn" onclick="togglePass('adminPass', this)">
-                            <i class="fa-regular fa-eye"></i>
-                        </button>
-                    </div>
-                    <button type="submit" class="signin-btn">
-                        Sign In <i class="fa-solid fa-arrow-right"></i>
-                    </button>
-                </form>
-                <a href="/login" class="forgot-link">← Back to User Login</a>
-            </div>
+            <a href="#" class="forgot-link">Forgot password?</a>
 
         </div>
+
     </div>
 </div>
 
 <!-- ── FOOTER ── -->
-<div class="bottom-footer">
-    <a href="/index" class="footer-item">
-        <i class="fa-solid fa-house"></i> About us
-    </a>
-    <span class="footer-sep">|</span>
-    <a href="/index" class="footer-item">
-        <i class="fa-solid fa-phone"></i> Contact us
-    </a>
-    <span class="footer-sep">|</span>
-    <a href="/compatibility" class="footer-item">
-        <i class="fa-solid fa-file-lines"></i> Our reference
-    </a>
-    <span class="footer-sep">|</span>
-    <a href="/admin/login" class="footer-item">
-        <i class="fa-solid fa-shield-halved"></i> Admin Login
-    </a>
+<div class="footer">
+    <div class="footer-inner">
+        <a href="/index" class="footer-item">
+            <i class="fa-solid fa-house"></i> About us
+        </a>
+        <div class="footer-sep"></div>
+        <a href="/index" class="footer-item">
+            <i class="fa-solid fa-phone"></i> Contact us
+        </a>
+        <div class="footer-sep"></div>
+        <a href="/compatibility" class="footer-item">
+            <i class="fa-solid fa-file-lines"></i> Our reference
+        </a>
+        <div class="footer-sep"></div>
+        <a href="/admin/login" class="footer-item">
+            <i class="fa-solid fa-shield-halved"></i> Admin Login
+        </a>
+    </div>
 </div>
 
 <script>
-    function setTab(tab, btn) {
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        document.getElementById('userForm').style.display  = tab === 'user'  ? 'block' : 'none';
-        document.getElementById('adminForm').style.display = tab === 'admin' ? 'block' : 'none';
-    }
-
-    function togglePass(id, btn) {
-        const inp = document.getElementById(id);
-        const icon = btn.querySelector('i');
+    function togglePass() {
+        const inp  = document.getElementById('passInput');
+        const icon = document.getElementById('eyeIcon');
         if (inp.type === 'password') {
             inp.type = 'text';
             icon.className = 'fa-regular fa-eye-slash';
@@ -524,13 +428,6 @@
             icon.className = 'fa-regular fa-eye';
         }
     }
-
-    // Auto-switch to admin tab if redirected from admin login flash
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            // If there are flash messages, likely admin login attempt
-        {% endif %}
-    {% endwith %}
 </script>
 
 </body>
