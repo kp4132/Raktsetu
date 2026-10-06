@@ -3,99 +3,535 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - RaktSetu</title>
-
+    <title>RaktSetu – Login</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <style>
-        * {
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f5f5f5;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #fff;
             min-height: 100vh;
             display: flex;
-            justify-content: center;
-            align-items: center;
+            flex-direction: column;
         }
 
-        .login-container {
-            background: white;
-            width: 90%;
+        /* ── TOP HEADER ── */
+        .top-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            padding: 18px 40px;
+            border-bottom: 2px solid #e8e8e8;
+        }
+        .header-line {
+            flex: 1;
+            height: 2px;
+            background: linear-gradient(to right, transparent, #c0392b);
+        }
+        .header-line.right {
+            background: linear-gradient(to left, transparent, #c0392b);
+        }
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 26px;
+            font-weight: 800;
+            color: #1a1a1a;
+            white-space: nowrap;
+        }
+        .header-brand span { color: #c0392b; }
+        .header-icon {
+            width: 38px;
+            height: 38px;
+            background: #c0392b;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+        }
+
+        /* ── MAIN CONTENT ── */
+        .main-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px 20px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Left red wave decoration */
+        .wave-left {
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 220px; height: 220px;
+            background: radial-gradient(ellipse at bottom left, rgba(192,57,43,0.18) 0%, transparent 70%);
+            border-radius: 0 100% 0 0;
+            pointer-events: none;
+        }
+        .wave-right {
+            position: absolute;
+            bottom: 0; right: 0;
+            width: 180px; height: 160px;
+            background: radial-gradient(ellipse at bottom right, rgba(192,57,43,0.13) 0%, transparent 70%);
+            border-radius: 100% 0 0 0;
+            pointer-events: none;
+        }
+
+        .content-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 60px;
+            width: 100%;
+            max-width: 960px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ── LEFT BRANDING ── */
+        .brand-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
             max-width: 420px;
-            padding: 35px;
-            border-radius: 18px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Blood drop SVG logo */
+        .logo-graphic {
+            position: relative;
+            width: 200px;
+            height: 220px;
+            margin-bottom: 18px;
+        }
+        .heart-bg {
+            position: absolute;
+            top: 10px; left: 10px;
+            width: 180px; height: 180px;
+            opacity: 0.15;
+        }
+        .drop-svg {
+            position: absolute;
+            top: 0; left: 50%;
+            transform: translateX(-50%);
+            width: 160px;
+            filter: drop-shadow(0 8px 24px rgba(192,57,43,0.35));
+        }
+        .heartbeat-line {
+            position: absolute;
+            bottom: 12px; left: 0; right: 0;
+            height: 28px;
+        }
+
+        .brand-name {
+            font-size: 38px;
+            font-weight: 900;
+            letter-spacing: -1px;
+            color: #1a1a1a;
+            line-height: 1;
+        }
+        .brand-name span { color: #c0392b; }
+
+        .brand-sub {
+            font-size: 11px;
+            letter-spacing: 3px;
+            color: #555;
+            margin: 6px 0 14px;
+            text-transform: uppercase;
+        }
+        .brand-sub .dot { color: #c0392b; margin: 0 6px; }
+
+        .brand-tagline {
+            font-family: 'Georgia', serif;
+            font-style: italic;
+            font-size: 17px;
+            color: #c0392b;
+            font-weight: 600;
+            position: relative;
+            display: inline-block;
+            padding-bottom: 6px;
+        }
+        .brand-tagline::after {
+            content: '';
+            display: block;
+            width: 80%;
+            height: 2px;
+            background: #c0392b;
+            margin: 6px auto 0;
+            border-radius: 2px;
+        }
+
+        /* ── RIGHT LOGIN CARD ── */
+        .login-card {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 40px rgba(0,0,0,0.13);
+            padding: 42px 38px 36px;
+            width: 360px;
+            flex-shrink: 0;
+        }
+
+        .login-title {
+            text-align: center;
+            font-size: 24px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .login-title i { color: #1a1a1a; font-size: 20px; }
+
+        .login-divider {
+            width: 40px;
+            height: 3px;
+            background: #c0392b;
+            border-radius: 2px;
+            margin: 8px auto 28px;
+        }
+
+        /* Flash messages */
+        .flash-msg {
+            padding: 10px 14px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            font-size: 13px;
             text-align: center;
         }
+        .flash-danger { background: #fef2f2; color: #b91c1c; border: 1px solid #fca5a5; }
+        .flash-success { background: #f0fdf4; color: #166534; border: 1px solid #86efac; }
 
-        .logo {
-            font-size: 50px;
-            margin-bottom: 10px;
+        /* Inputs */
+        .input-group {
+            position: relative;
+            margin-bottom: 18px;
+        }
+        .input-group i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+            font-size: 15px;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 13px 14px 13px 40px;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 15px;
+            color: #333;
+            background: #fafafa;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .input-group input:focus {
+            border-color: #c0392b;
+            background: #fff;
+        }
+        .input-group input::placeholder { color: #bbb; }
+
+        /* Eye toggle */
+        .eye-btn {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #aaa;
+            font-size: 15px;
+            padding: 0;
+        }
+        .eye-btn:hover { color: #c0392b; }
+
+        /* Tabs: User / Admin */
+        .login-tabs {
+            display: flex;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1.5px solid #e0e0e0;
+            margin-bottom: 24px;
+        }
+        .tab-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            background: #fafafa;
+            color: #888;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .tab-btn.active {
+            background: #c0392b;
+            color: #fff;
         }
 
-        h1 {
-            color: #d32f2f;
-            margin: 5px 0;
-        }
-
-        p {
-            color: #666;
-            margin-bottom: 30px;
-        }
-
-        .login-btn {
-            display: block;
+        /* Sign In button */
+        .signin-btn {
             width: 100%;
             padding: 14px;
-            margin: 15px 0;
-            border-radius: 10px;
-            text-decoration: none;
-            font-size: 17px;
-            font-weight: bold;
+            background: #c0392b;
             color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            letter-spacing: 0.5px;
+            transition: background 0.2s, transform 0.1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 6px;
+        }
+        .signin-btn:hover { background: #a93226; }
+        .signin-btn:active { transform: scale(0.98); }
+
+        .forgot-link {
+            display: block;
+            text-align: center;
+            margin-top: 16px;
+            color: #c0392b;
+            font-size: 14px;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .forgot-link:hover { text-decoration: underline; }
+
+        /* ── FOOTER ── */
+        .bottom-footer {
+            background: #1a1a1a;
+            color: #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            padding: 0;
+            height: 52px;
+            flex-wrap: wrap;
+        }
+        .footer-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 0 24px;
+            color: #ccc;
+            text-decoration: none;
+            font-size: 14px;
+            height: 100%;
+            transition: color 0.2s;
+            white-space: nowrap;
+        }
+        .footer-item:hover { color: #fff; }
+        .footer-item i { color: #c0392b; font-size: 16px; }
+        .footer-sep {
+            color: #444;
+            font-size: 20px;
+            line-height: 52px;
+            user-select: none;
         }
 
-        .admin-btn {
-            background: #d32f2f;
-        }
-
-        .admin-btn:hover {
-            background: #b71c1c;
-        }
-
-        .user-btn {
-            background: #333;
-        }
-
-        .user-btn:hover {
-            background: #222;
+        /* ── RESPONSIVE ── */
+        @media (max-width: 720px) {
+            .content-wrapper { flex-direction: column; gap: 30px; }
+            .brand-panel { max-width: 100%; }
+            .login-card { width: 100%; max-width: 380px; padding: 30px 24px; }
+            .logo-graphic { width: 150px; height: 165px; }
+            .drop-svg { width: 120px; }
+            .brand-name { font-size: 30px; }
+            .footer-item { padding: 0 12px; font-size: 12px; }
         }
     </style>
 </head>
-
 <body>
 
-<div class="login-container">
-
-    <div class="logo">🩸</div>
-
-    <h1>RaktSetu</h1>
-
-    <p>Blood Donor Finder</p>
-
-    <a href="{{ url_for('admin_login') }}"
-       class="login-btn admin-btn">
-        Admin Login
-    </a>
-
-    <a href="{{ url_for('register') }}"
-       class="login-btn user-btn">
-        User / Donor Registration
-    </a>
-
+<!-- ── HEADER ── -->
+<div class="top-header">
+    <div class="header-line"></div>
+    <div class="header-brand">
+        <div class="header-icon"><i class="fa-solid fa-plus"></i></div>
+        Rakt<span>Setu</span>
+    </div>
+    <div class="header-line right"></div>
 </div>
+
+<!-- ── MAIN ── -->
+<div class="main-content">
+    <div class="wave-left"></div>
+    <div class="wave-right"></div>
+
+    <div class="content-wrapper">
+
+        <!-- LEFT: Branding -->
+        <div class="brand-panel">
+            <div class="logo-graphic">
+                <!-- Heart background -->
+                <svg class="heart-bg" viewBox="0 0 200 200" fill="none">
+                    <path d="M100 170 C60 140 10 110 10 65 C10 30 35 10 65 10 C80 10 95 18 100 30 C105 18 120 10 135 10 C165 10 190 30 190 65 C190 110 140 140 100 170Z"
+                          fill="#c0392b" opacity="0.18"/>
+                </svg>
+                <!-- Blood drop with cross -->
+                <svg class="drop-svg" viewBox="0 0 160 200" fill="none">
+                    <defs>
+                        <radialGradient id="dropGrad" cx="40%" cy="35%" r="65%">
+                            <stop offset="0%" stop-color="#e74c3c"/>
+                            <stop offset="100%" stop-color="#7b0000"/>
+                        </radialGradient>
+                    </defs>
+                    <!-- Drop shape -->
+                    <path d="M80 10 C80 10 20 80 20 120 C20 155 47 178 80 178 C113 178 140 155 140 120 C140 80 80 10 80 10Z"
+                          fill="url(#dropGrad)"/>
+                    <!-- White highlight -->
+                    <ellipse cx="60" cy="75" rx="14" ry="22" fill="white" opacity="0.22" transform="rotate(-20 60 75)"/>
+                    <!-- White cross -->
+                    <rect x="68" y="95" width="24" height="60" rx="6" fill="white" opacity="0.92"/>
+                    <rect x="50" y="113" width="60" height="24" rx="6" fill="white" opacity="0.92"/>
+                    <!-- Hand arc -->
+                    <path d="M35 145 Q50 125 80 130 Q110 125 125 145" stroke="white" stroke-width="4" fill="none" stroke-linecap="round" opacity="0.55"/>
+                </svg>
+                <!-- Heartbeat line -->
+                <svg class="heartbeat-line" viewBox="0 0 200 28" fill="none">
+                    <polyline points="0,14 30,14 40,4 50,24 60,4 70,22 80,14 200,14"
+                              stroke="#c0392b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+
+            <div class="brand-name">Rakt<span>Setu</span></div>
+            <div class="brand-sub">Donate Blood <span class="dot">●</span> Save Lives</div>
+            <div class="brand-tagline">Together We Build a Healthier Tomorrow</div>
+        </div>
+
+        <!-- RIGHT: Login Card -->
+        <div class="login-card">
+
+            <div class="login-title">
+                <i class="fa-solid fa-circle-user"></i> Login
+            </div>
+            <div class="login-divider"></div>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="flash-msg flash-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <!-- Tab switcher -->
+            <div class="login-tabs">
+                <button class="tab-btn active" onclick="setTab('user', this)">
+                    <i class="fa-solid fa-user"></i> User
+                </button>
+                <button class="tab-btn" onclick="setTab('admin', this)">
+                    <i class="fa-solid fa-shield-halved"></i> Admin
+                </button>
+            </div>
+
+            <!-- User form (no auth, just enter the app) -->
+            <div id="userForm">
+                <div class="input-group">
+                    <i class="fa-solid fa-envelope"></i>
+                    <input type="email" placeholder="Email" id="userEmail">
+                </div>
+                <div class="input-group">
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password" placeholder="Password" id="userPass">
+                    <button type="button" class="eye-btn" onclick="togglePass('userPass', this)">
+                        <i class="fa-regular fa-eye"></i>
+                    </button>
+                </div>
+                <button class="signin-btn" onclick="window.location.href='/index'">
+                    Sign In <i class="fa-solid fa-arrow-right"></i>
+                </button>
+                <a href="/register" class="forgot-link">New here? Register as Donor →</a>
+            </div>
+
+            <!-- Admin form -->
+            <div id="adminForm" style="display:none;">
+                <form method="POST" action="/admin/login">
+                    <div class="input-group">
+                        <i class="fa-solid fa-user-shield"></i>
+                        <input type="text" name="username" placeholder="Admin Username" required>
+                    </div>
+                    <div class="input-group">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="password" name="password" placeholder="Admin Password" id="adminPass" required>
+                        <button type="button" class="eye-btn" onclick="togglePass('adminPass', this)">
+                            <i class="fa-regular fa-eye"></i>
+                        </button>
+                    </div>
+                    <button type="submit" class="signin-btn">
+                        Sign In <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </form>
+                <a href="/login" class="forgot-link">← Back to User Login</a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- ── FOOTER ── -->
+<div class="bottom-footer">
+    <a href="/index" class="footer-item">
+        <i class="fa-solid fa-house"></i> About us
+    </a>
+    <span class="footer-sep">|</span>
+    <a href="/index" class="footer-item">
+        <i class="fa-solid fa-phone"></i> Contact us
+    </a>
+    <span class="footer-sep">|</span>
+    <a href="/compatibility" class="footer-item">
+        <i class="fa-solid fa-file-lines"></i> Our reference
+    </a>
+    <span class="footer-sep">|</span>
+    <a href="/admin/login" class="footer-item">
+        <i class="fa-solid fa-shield-halved"></i> Admin Login
+    </a>
+</div>
+
+<script>
+    function setTab(tab, btn) {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById('userForm').style.display  = tab === 'user'  ? 'block' : 'none';
+        document.getElementById('adminForm').style.display = tab === 'admin' ? 'block' : 'none';
+    }
+
+    function togglePass(id, btn) {
+        const inp = document.getElementById(id);
+        const icon = btn.querySelector('i');
+        if (inp.type === 'password') {
+            inp.type = 'text';
+            icon.className = 'fa-regular fa-eye-slash';
+        } else {
+            inp.type = 'password';
+            icon.className = 'fa-regular fa-eye';
+        }
+    }
+
+    // Auto-switch to admin tab if redirected from admin login flash
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            // If there are flash messages, likely admin login attempt
+        {% endif %}
+    {% endwith %}
+</script>
 
 </body>
 </html>
